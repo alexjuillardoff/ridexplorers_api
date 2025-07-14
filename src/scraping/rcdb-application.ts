@@ -215,6 +215,35 @@ export default class RcdbScraper extends PaginatedScraper {
     return this._coasters;
   }
 
+  public async scrapeCoastersByIds(ids: number[]): Promise<RollerCoaster[]> {
+    const start = performance.now();
+
+    console.log(`Scraping ${ids.length} random coasters 🎢`);
+
+    this._progressBar.start(ids.length, 0);
+    this._coasters = [];
+    this._photosByCoaster = {} as any;
+
+    for (const id of ids) {
+      const link = `/${id}.htm`;
+      const coaster = await this._getCoasterDetails(link);
+      this._progressBar.increment();
+
+      if (coaster.name) {
+        this._coasters = [...this._coasters, coaster];
+      }
+    }
+
+    this._progressBar.stop();
+
+    const end = performance.now();
+    const time = (end - start) / 1000 / 60;
+
+    console.log(`Coasters scraped in ${time} minutes`);
+
+    return this._coasters;
+  }
+
   public async scrapeCoasters({region}: { region: Regions }) {
     const start = performance.now();
 
