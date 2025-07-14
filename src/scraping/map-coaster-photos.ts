@@ -3,8 +3,10 @@ import { __COASTERS_DB_FILENAME__, __COASTERS_RAW_DB_FILENAME__ } from '@app/con
 import JsonDB from '@app/db';
 import config from '@config';
 
+const RCDB_BASE_URL = config.RCDB_URL || 'https://rcdb.com';
+
 function mapCoasterImagesToStaticPath(coasters: RollerCoaster[]): RollerCoaster[] {
-  const getRcdbPath = (url: string) => `${config.RCDB_URL}${url}`;
+  const getRcdbPath = (url: string) => `${RCDB_BASE_URL}${url}`;
 
   return coasters.map((coaster: RollerCoaster) => {
     const mainPicture: Picture = coaster.mainPicture
