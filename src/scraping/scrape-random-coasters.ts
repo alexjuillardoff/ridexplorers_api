@@ -1,5 +1,7 @@
 import RcdbScraper from '@scraping/rcdb-application';
 import { getRandom } from '@app/utils';
+import JsonDB from '@app/db';
+import { __RANDOM_COASTERS_DB_FILENAME__ } from '@app/constants';
 
 const rcdbScraper: RcdbScraper = RcdbScraper.getInstance();
 
@@ -16,5 +18,11 @@ function getRandomIds(amount: number, min: number, max: number): number[] {
 
 (async () => {
   const ids: number[] = getRandomIds(20, 1, 23000);
-  await rcdbScraper.scrapeCoastersByIds(ids);
+  const db = JsonDB.getInstance();
+  const coasters = await rcdbScraper.scrapeCoastersByIds(ids);
+
+  await db.writeDBFile(__RANDOM_COASTERS_DB_FILENAME__, coasters);
+
+  // If you need to map images to a static path, run:
+  // npm run scrape:map-coaster-photos
 })();

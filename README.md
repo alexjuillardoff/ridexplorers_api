@@ -11,3 +11,7 @@ REST API built by scrape [RCDB](https://rcdb.com) website.
 | `GET`     | `/api/coasters/:id`    | Returns coaster data with matched id. If no coaster is found return `404` status code, with response `{message: 'Coaster with :id not found'}`                |                                                                                                                                          |
 | `GET`     | `/api/coasters/random` | Returns a random coaster. If no coaster is found return `400` status code, with response `{message: 'Error getting a random coaster}', cause: 'error cause'}` |                                                                                                                                          |
 | `GET`     | `/api/coasters/search` | Returns coasters that match with the `q` parameter passed by query params. If no coaster matched a `400` status code, with response `[]`                      |                                                                                                                                          |
+
+## Data files
+- `src/db/random-coasters.json`: results from `npm run scrape:random`.
+- Run `npm run scrape:map-coaster-photos` to map images
