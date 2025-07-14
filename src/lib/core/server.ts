@@ -21,7 +21,7 @@ export default class Server {
     this._app.use(express.json());
     this._app.use(express.static('static'));
     this._app.use(cors());
-    this._port = Number(process.env.PORT) ?? DEFAULT_SERVER_PORT;
+    this._port = Number(process.env.PORT ?? DEFAULT_SERVER_PORT);
     this._diContainer = DiContainer.getInstance();
   }
 
