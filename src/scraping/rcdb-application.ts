@@ -13,6 +13,11 @@ export interface ScrapeRange {
   endId: number;
 }
 
+export interface PageRange {
+  startPage: number;
+  endPage: number;
+}
+
 const DATE_TYPE_BY_INDEX = ["opened", "closed"]
 
 const camelize = (str: string) =>
@@ -232,6 +237,32 @@ export default class RcdbScraper extends PaginatedScraper {
       if (coaster.name) {
         this._coasters = [...this._coasters, coaster];
       }
+    }
+
+    this._progressBar.stop();
+
+    const end = performance.now();
+    const time = (end - start) / 1000 / 60;
+
+    console.log(`Coasters scraped in ${time} minutes`);
+
+    return this._coasters;
+  }
+
+  public async scrapeCoastersByPageRange({ startPage, endPage }: PageRange): Promise<RollerCoaster[]> {
+    const start = performance.now();
+
+    console.log(`Scraping coasters pages ${startPage} to ${endPage} 🎢`);
+
+    const totalItems = (endPage - startPage + 1) * this.ITEMS_PER_PAGE;
+
+    this._progressBar.start(totalItems, 0);
+    this._coasters = [];
+    this._photosByCoaster = {} as any;
+
+    for (let page = startPage; page <= endPage; page++) {
+      const coastersByPage: RollerCoaster[] = await this._getDataByPage(page);
+      this._coasters = [...this._coasters, ...coastersByPage];
     }
 
     this._progressBar.stop();
