@@ -1,14 +1,14 @@
 import Application from '@scraping/application';
 import { program } from 'commander';
-import type { Regions } from '@scraping/rcdb-application';
 
-program.option('--region <regionName>');
+program.option('--startId <number>');
+program.option('--endId <number>');
 program.option('--saveData <boolean>');
 
 program.parse();
 
-const { region = 'World', saveData = 'true' } = program.opts<{ region: Regions; saveData: string }>();
+const { startId = '1', endId = '23000', saveData = 'true' } = program.opts<{ startId: string; endId: string; saveData: string }>();
 
 const app = new Application();
 
-app.start({ region, saveData: saveData === 'true' });
+app.start({ startId: Number(startId), endId: Number(endId), saveData: saveData === 'true' });

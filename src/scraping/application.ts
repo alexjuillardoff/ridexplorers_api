@@ -1,7 +1,7 @@
 import { __COASTERS_DB_FILENAME__, __COASTERS_RAW_DB_FILENAME__ } from '@app/constants';
 import JsonDB from '@app/db';
 import type { RollerCoaster } from '@app/types';
-import type { Regions } from '@scraping/rcdb-application';
+import type { ScrapeRange } from '@scraping/rcdb-application';
 import RcdbScraper from '@scraping/rcdb-application';
 
 export const title = `
@@ -46,8 +46,8 @@ export default class Application {
       .catch((err: Error) => console.error('💥 Error creating raw coasters database file...', err));
   }
 
-  async start({ region, saveData }: { region: Regions; saveData: boolean }) {
-    const coasters: RollerCoaster[] = await this._rcdbScraper.scrapeCoasters({ region });
+  async start({ startId, endId, saveData }: ScrapeRange & { saveData: boolean }) {
+    const coasters: RollerCoaster[] = await this._rcdbScraper.scrapeCoastersByIdRange({ startId, endId });
 
     await this._saveRawRollerCoasters(coasters);
 

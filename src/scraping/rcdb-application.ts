@@ -8,6 +8,11 @@ import PaginatedScraper from './paginated-scraper';
 
 export type Regions = 'Madrid' | 'Europe' | 'Spain' | 'World';
 
+export interface ScrapeRange {
+  startId: number;
+  endId: number;
+}
+
 const DATE_TYPE_BY_INDEX = ["opened", "closed"]
 
 const camelize = (str: string) =>
@@ -179,6 +184,35 @@ export default class RcdbScraper extends PaginatedScraper {
     }
 
     return coastersPage;
+  }
+
+  public async scrapeCoastersByIdRange({ startId, endId }: ScrapeRange): Promise<RollerCoaster[]> {
+    const start = performance.now();
+
+    console.log(`Scraping coasters from ${startId} to ${endId} 🎢`);
+
+    this._progressBar.start(endId - startId + 1, 0);
+    this._coasters = [];
+    this._photosByCoaster = {} as any;
+
+    for (let id = startId; id <= endId; id++) {
+      const link = `/${id}.htm`;
+      const coaster = await this._getCoasterDetails(link);
+      this._progressBar.increment();
+
+      if (coaster.name) {
+        this._coasters = [...this._coasters, coaster];
+      }
+    }
+
+    this._progressBar.stop();
+
+    const end = performance.now();
+    const time = (end - start) / 1000 / 60;
+
+    console.log(`Coasters scraped in ${time} minutes`);
+
+    return this._coasters;
   }
 
   public async scrapeCoasters({region}: { region: Regions }) {
