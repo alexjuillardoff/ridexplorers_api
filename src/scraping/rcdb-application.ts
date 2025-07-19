@@ -46,7 +46,14 @@ export default class RcdbScraper extends PaginatedScraper {
   private _coastersUrl: string = '/r.htm?';
   private _themParksUrl: string = '/r.htm?ot=3';
   private _coasters: RollerCoaster[] = [];
-  private _progressBar: SingleBar = new SingleBar({}, Presets.shades_classic);
+  private _progressBar: SingleBar = new SingleBar(
+    {
+      format:
+        'Scraping |{bar}| {percentage}% || {value}/{total} items || ETA: {eta_formatted}',
+      hideCursor: true,
+    },
+    Presets.shades_classic
+  );
   private _photosByCoaster: { [coasterId: number]: Picture[] };
 
   private constructor() {

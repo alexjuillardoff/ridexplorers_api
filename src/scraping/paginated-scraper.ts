@@ -2,6 +2,7 @@ import { load } from 'cheerio';
 import type { CheerioAPI } from 'cheerio';
 import Scraper from './scraper';
 import { getNumberOnly } from '@app/utils';
+import { Presets, SingleBar } from 'cli-progress';
 
 export default class PaginatedScraper extends Scraper {
   protected readonly ITEMS_PER_PAGE: number = 24;
@@ -30,10 +31,28 @@ export default class PaginatedScraper extends Scraper {
 
     console.log(`Items: ${total}, Pages: ${pages}`);
 
-    for (let page = 1; page <= total; page++) {
-      const itemsByPage = await this.__getDataByPage(url, page, onItemScrape);
+    const progressBar = new SingleBar(
+      {
+        format:
+          'Scraping |{bar}| {percentage}% || {value}/{total} items || ETA: {eta_formatted}',
+        hideCursor: true,
+      },
+      Presets.shades_classic
+    );
+
+    progressBar.start(total, 0);
+
+    for (let page = 1; page <= pages; page++) {
+      const itemsByPage = await this.__getDataByPage(
+        url,
+        page,
+        onItemScrape,
+        progressBar
+      );
       allItems = [...allItems, ...itemsByPage];
     }
+
+    progressBar.stop();
 
     return allItems;
   }
@@ -41,7 +60,8 @@ export default class PaginatedScraper extends Scraper {
   private async __getDataByPage<TData>(
     url: string,
     page: number,
-    onItemScrape: ($htmlPage: CheerioAPI, id: number) => TData
+    onItemScrape: ($htmlPage: CheerioAPI, id: number) => TData,
+    progressBar: SingleBar
   ): Promise<TData[]> {
     const data = await this.fetchUrl(`${url}&page=${page}`);
     const $paginated = load(data);
@@ -58,6 +78,7 @@ export default class PaginatedScraper extends Scraper {
         const linkItem = onItemScrape($page, getNumberOnly(link));
 
         itemsPage = [...itemsPage, linkItem];
+        progressBar.increment();
       }
     }
 
