@@ -15,7 +15,7 @@ export default class IndexController {
     res.json(this._endpoints);
   }
 
-  @Get('api')
+  @Get('/api')
   public apiRoute(_: Request, res: Response) {
     res.json(this._endpoints);
   }
