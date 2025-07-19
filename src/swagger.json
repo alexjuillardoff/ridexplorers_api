@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RCDB REST API",
+    "version": "1.0.0",
+    "description": "API providing data about roller coasters and theme parks"
+  },
+  "servers": [
+    { "url": "http://localhost:8000" }
+  ],
+  "paths": {
+    "/api/coasters": {
+      "get": {
+        "summary": "List coasters",
+        "parameters": [
+          {"name": "offset", "in": "query", "schema": {"type": "integer"}},
+          {"name": "limit", "in": "query", "schema": {"type": "integer"}}
+        ],
+        "responses": {"200": {"description": "Paginated coasters"}}
+      }
+    },
+    "/api/coasters/{id}": {
+      "get": {
+        "summary": "Get coaster by id",
+        "parameters": [
+          {"name": "id", "in": "path", "required": true, "schema": {"type": "integer"}}
+        ],
+        "responses": {"200": {"description": "Coaster"}, "404": {"description": "Not found"}}
+      }
+    },
+    "/api/coasters/random": {
+      "get": {"summary": "Random coaster", "responses": {"200": {"description": "Random coaster"}}}
+    },
+    "/api/coasters/search": {
+      "get": {
+        "summary": "Search coasters",
+        "parameters": [{"name": "q", "in": "query", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Search result"}}
+      }
+    },
+    "/api/theme-parks": {
+      "get": {
+        "summary": "List theme parks",
+        "parameters": [
+          {"name": "offset", "in": "query", "schema": {"type": "integer"}},
+          {"name": "limit", "in": "query", "schema": {"type": "integer"}}
+        ],
+        "responses": {"200": {"description": "Paginated theme parks"}}
+      }
+    },
+    "/api/theme-parks/{id}": {
+      "get": {
+        "summary": "Get theme park by id",
+        "parameters": [
+          {"name": "id", "in": "path", "required": true, "schema": {"type": "integer"}}
+        ],
+        "responses": {"200": {"description": "Theme park"}, "400": {"description": "Not found"}}
+      }
+    }
+  }
+}

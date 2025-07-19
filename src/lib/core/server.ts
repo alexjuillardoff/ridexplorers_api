@@ -6,6 +6,8 @@ import type { Express, Handler } from 'express';
 import express, { Router } from 'express';
 import { Server as HttpServer } from 'http';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../../swagger.json';
 
 const DEFAULT_SERVER_PORT = 8000;
 
@@ -21,6 +23,7 @@ export default class Server {
     this._app.use(express.json());
     this._app.use(express.static('static'));
     this._app.use(cors());
+    this._app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     this._port = Number(process.env.PORT ?? DEFAULT_SERVER_PORT);
     this._diContainer = DiContainer.getInstance();
   }
