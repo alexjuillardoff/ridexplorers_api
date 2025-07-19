@@ -19,5 +19,5 @@ async function saveThemeParks(themeParks: ThemePark[]): Promise<void> {
 
   const themeParks: ThemePark[] = await rcdbScraper.scrapeThemeParks();
 
-  // await saveThemeParks(themeParks);
+  await saveThemeParks(themeParks);
 })();
