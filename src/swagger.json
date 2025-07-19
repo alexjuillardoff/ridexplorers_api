@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "RCDB REST API",
+    "title": "RIDEXPLORERS API",
     "version": "1.0.0",
     "description": "API providing data about roller coasters and theme parks"
   },

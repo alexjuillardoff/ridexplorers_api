@@ -1,6 +1,6 @@
-# 🎢 RCDB REST API
+# 🎢 RIDEXPLORERS API
 
-This project exposes a simple REST API containing data scraped from [RCDB](https://rcdb.com). It is built with **TypeScript** using **Express** and provides endpoints to query roller coasters and theme parks information.
+RIDEXPLORERS API exposes a simple REST API containing data scraped from [RCDB](https://rcdb.com). It is built with **TypeScript** using **Express** and provides endpoints to query roller coasters and theme parks information.
 
 ## Getting started
 
