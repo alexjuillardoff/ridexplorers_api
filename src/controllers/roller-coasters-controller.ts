@@ -30,15 +30,6 @@ export default class RollerCoastersController {
     }
   }
 
-  @Get('/random')
-  public async getRandomCoasterRoute(req: Request, res: Response) {
-    try {
-      const randomCoaster: RollerCoaster = await this._rollercoasterService.getRandomCoaster();
-      res.status(200).json(randomCoaster);
-    } catch (e: any) {
-      res.status(400).json({ message: 'Error getting a random coaster', cause: e });
-    }
-  }
 
   @Get('/search')
   public async searchCoasterRoute(req: Request, res: Response) {
