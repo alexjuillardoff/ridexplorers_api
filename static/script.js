@@ -32,8 +32,8 @@ function loadFiles() {
       filesList.innerHTML = '';
       files.forEach(f => {
         const li = document.createElement('li');
-        li.textContent = `${f.name} - ${f.lastModified}`;
-        li.style.cursor = 'pointer';
+        const date = new Date(f.lastModified).toLocaleString();
+        li.textContent = `${f.name} - ${date}`;
         li.addEventListener('click', () => loadFile(f.name));
         filesList.appendChild(li);
       });

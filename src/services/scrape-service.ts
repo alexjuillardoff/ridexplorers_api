@@ -14,7 +14,8 @@ export default class ScrapeService {
     }
 
     return new Promise((resolve, reject) => {
-      const child = spawn('pnpm', ['run', script], { shell: true });
+      // Use npm to execute the script since it is more commonly available
+      const child = spawn('npm', ['run', script], { shell: true });
       this._currentProcess = child;
 
       const send = (event: string, msg: string) => io?.emit(event, msg);
@@ -41,7 +42,8 @@ export default class ScrapeService {
     return Promise.all(
       jsonFiles.map(async (name) => {
         const stats = await stat(path.join(dir, name));
-        return { name, lastModified: stats.mtime.toISOString() };
+        // Use the file creation time to determine when it was last scraped
+        return { name, lastModified: stats.birthtime.toISOString() };
       })
     );
   }
