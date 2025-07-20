@@ -43,12 +43,11 @@ The API works with JSON files located under `src/db/`. These files are generated
 | `GET`     | `/api/coasters/search?q=`  | Returns coasters whose name or park matches the `q` value.                                       |
 | `GET`     | `/api/theme-parks`         | Returns a paginated list of theme parks. Use `offset` and `limit` query parameters.              |
 | `GET`     | `/api/theme-parks/:id`     | Returns a theme park by id. Returns `400` if not found.                                          |
-| `GET`     | `/api/scrape/random`       | Scrape 20 random coasters and store them in the database.                                        |
 
 ## Data files
 - `src/db/coasters.json` – all scraped coasters with mapped image URLs.
 - `src/db/coasters-raw.json` – raw coaster data before mapping images.
 - `src/db/theme-parks.json` – scraped theme park data.
-- `src/db/random-coasters.json` – results from `npm run scrape:random` or `/api/scrape/random`.
+- `src/db/random-coasters.json` – results from `npm run scrape:random`.
 
 Happy riding!
