@@ -5,6 +5,9 @@ import type { RollerCoaster } from '@app/types';
 import { Service } from '@lib/decorators';
 
 @Service()
+/**
+ * Handles retrieval of coaster data from the local JSON database.
+ */
 export default class RollerCoasterService {
   private _db: JsonDB;
 
@@ -29,7 +32,9 @@ export default class RollerCoasterService {
     return coasters.find(({ id: coasterId }: RollerCoaster) => coasterId === id);
   }
 
-
+  /**
+   * Look up coasters whose name or park includes the provided search term.
+   */
   public async searchCoasters(searchTerm: string): Promise<RollerCoaster[]> {
     const coasters: RollerCoaster[] = await this._getCoastersDB();
 

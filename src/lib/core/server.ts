@@ -14,6 +14,11 @@ export let io: SocketServer;
 
 const DEFAULT_SERVER_PORT = 8000;
 
+/**
+ * Wrapper around an Express application that also exposes a Socket.IO instance.
+ * Controllers decorated with `@Controller` are discovered and registered at
+ * startup.
+ */
 export default class Server {
   private readonly _app: Express;
   private readonly _port: number;
@@ -48,6 +53,11 @@ export default class Server {
     this._controllers = controllers;
   }
 
+  /**
+   * Register all controllers declared via `setControllers` by reading the
+   * metadata added by the decorators. Routes are bound to an Express router and
+   * mounted under the controller base path.
+   */
   private _initControllers() {
     [...this._controllers]?.forEach((ControllerClass) => {
       const basePath: string = Reflect.getMetadata(MetadataKeys.BASE_PATH, ControllerClass);
@@ -76,6 +86,10 @@ export default class Server {
     });
   }
 
+  /**
+   * Start the HTTP and WebSocket servers. Controllers must be registered
+   * before calling this method.
+   */
   start() {
     this._initControllers();
 

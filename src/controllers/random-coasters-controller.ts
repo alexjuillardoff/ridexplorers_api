@@ -4,6 +4,9 @@ import type { Request, Response } from 'express';
 import type { RollerCoaster } from '@app/types';
 
 @Controller('/api/random-coasters')
+/**
+ * Endpoints to retrieve coasters selected at random.
+ */
 export default class RandomCoastersController {
   @Inject() private _randomCoasterService: RandomCoasterService;
 
