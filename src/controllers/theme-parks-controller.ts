@@ -4,6 +4,9 @@ import type { Request, Response } from 'express';
 import { ThemePark } from '@app/types';
 
 @Controller('/api/theme-parks')
+/**
+ * Routes used to query information about theme parks.
+ */
 export default class ThemeParksController {
   @Inject() private _themeParkService: ThemeParkService;
 

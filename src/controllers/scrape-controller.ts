@@ -3,6 +3,9 @@ import type { Request, Response } from 'express';
 import { ScrapeService } from '@app/services';
 
 @Controller('/scrape')
+/**
+ * Exposes HTTP endpoints to run and monitor the scraping routines.
+ */
 export default class ScrapeController {
   @Inject() private _scrapeService: ScrapeService;
 

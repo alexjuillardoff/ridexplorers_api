@@ -5,10 +5,16 @@ import { io } from '@lib/core';
 import Service from '@lib/decorators/service-decorator';
 
 @Service()
+/**
+ * Runs the scraping npm scripts and streams their output through Socket.IO.
+ */
 export default class ScrapeService {
   private _currentProcess: ChildProcessWithoutNullStreams | null = null;
   private _logCache: string[] = [];
 
+  /**
+   * Launch a scraping npm script and forward its output to connected clients.
+   */
   async start(script: string): Promise<void> {
     if (this._currentProcess) {
       throw new Error('A scraping task is already running');
@@ -43,6 +49,10 @@ export default class ScrapeService {
     });
   }
 
+  /**
+   * Return the list of JSON files in the `src/db` directory along with their
+   * creation date. This is useful to inspect the available scraped datasets.
+   */
   async listFiles(): Promise<{ name: string; lastModified: string }[]> {
     const dir = path.join(process.cwd(), 'src', 'db');
     const files = await readdir(dir);
@@ -63,6 +73,8 @@ export default class ScrapeService {
   }
 
   getLogs(): string[] {
+    // A rolling buffer of the last stdout/stderr messages from the scraper
+    // process. The controller can expose this to clients.
     return this._logCache;
   }
 }

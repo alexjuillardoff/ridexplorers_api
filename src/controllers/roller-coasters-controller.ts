@@ -4,6 +4,9 @@ import type { Request, Response } from 'express';
 import RollerCoaster from 'types/roller-coaster';
 
 @Controller('/api/coasters')
+/**
+ * HTTP endpoints for retrieving coaster information.
+ */
 export default class RollerCoastersController {
   @Inject() private _rollercoasterService: RollerCoasterService;
 
