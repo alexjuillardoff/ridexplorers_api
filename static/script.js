@@ -48,4 +48,14 @@ function loadFile(name) {
     });
 }
 
+function loadLogs() {
+  fetch('/scrape/logs')
+    .then(r => r.json())
+    .then(logs => {
+      terminal.textContent = '';
+      logs.forEach(appendLog);
+    });
+}
+
 loadFiles();
+loadLogs();

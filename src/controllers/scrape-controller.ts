@@ -36,4 +36,10 @@ export default class ScrapeController {
       res.status(404).json({ message: 'File not found' });
     }
   }
+
+  @Get('/logs')
+  public async logs(_: Request, res: Response) {
+    const logs = this._scrapeService.getLogs();
+    res.json(logs);
+  }
 }
