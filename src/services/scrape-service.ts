@@ -7,18 +7,26 @@ import Service from '@lib/decorators/service-decorator';
 @Service()
 export default class ScrapeService {
   private _currentProcess: ChildProcessWithoutNullStreams | null = null;
+  private _logCache: string[] = [];
 
   async start(script: string): Promise<void> {
     if (this._currentProcess) {
       throw new Error('A scraping task is already running');
     }
 
+    this._logCache = [];
     return new Promise((resolve, reject) => {
       // Use npm to execute the script since it is more commonly available
       const child = spawn('npm', ['run', script], { shell: true });
       this._currentProcess = child;
 
-      const send = (event: string, msg: string) => io?.emit(event, msg);
+      const send = (event: string, msg: string) => {
+        if (this._logCache.length > 1000) {
+          this._logCache.shift();
+        }
+        this._logCache.push(msg);
+        io?.emit(event, msg);
+      };
 
       child.stdout.on('data', (data) => send('log', data.toString()));
       child.stderr.on('data', (data) => send('log', data.toString()));
@@ -28,7 +36,7 @@ export default class ScrapeService {
         reject(err);
       });
       child.on('close', (code) => {
-        send('done', String(code));
+        send('done', `Process finished with code ${code}\n`);
         this._currentProcess = null;
         resolve();
       });
@@ -52,5 +60,9 @@ export default class ScrapeService {
     const dir = path.join(process.cwd(), 'src', 'db', name);
     const content = await readFile(dir, 'utf-8');
     return JSON.parse(content);
+  }
+
+  getLogs(): string[] {
+    return this._logCache;
   }
 }
