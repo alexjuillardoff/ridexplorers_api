@@ -5,9 +5,12 @@ import { MetadataKeys } from '@lib/types';
 import type { Express, Handler } from 'express';
 import express, { Router } from 'express';
 import { Server as HttpServer } from 'http';
+import { Server as SocketServer } from 'socket.io';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../../swagger.json';
+
+export let io: SocketServer;
 
 const DEFAULT_SERVER_PORT = 8000;
 
@@ -15,6 +18,7 @@ export default class Server {
   private readonly _app: Express;
   private readonly _port: number;
   private _server: HttpServer;
+  private _io!: SocketServer;
   private _controllers: any[] = [];
   private _diContainer: DiContainer;
 
@@ -78,5 +82,8 @@ export default class Server {
     this._server = this._app.listen(this._port, () => {
       console.log(`⚡[server]: Server is running at http://localhost:${this._port}`);
     });
+
+    this._io = new SocketServer(this._server, { cors: { origin: '*' } });
+    io = this._io;
   }
 }
