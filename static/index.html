@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scraping Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Scraping Dashboard</h1>
+        <nav><a href="/docs" target="_blank">Swagger Docs</a></nav>
+      </header>
+
+      <section id="actions" class="card">
+        <button data-script="scrape">Run Scrape</button>
+        <button data-script="scrape:theme-parks">Scrape Theme Parks</button>
+        <button data-script="scrape:random">Scrape Random</button>
+        <button data-script="scrape:map-coaster-photos">Map Coaster Photos</button>
+      </section>
+
+      <section class="card">
+        <h2>Data files</h2>
+        <ul id="files"></ul>
+        <pre id="file-content"></pre>
+      </section>
+
+      <section class="card">
+        <h2>Logs</h2>
+        <pre id="terminal"></pre>
+      </section>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
