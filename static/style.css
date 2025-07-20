@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+#actions button {
+  margin-right: 10px;
+  padding: 10px 20px;
+}
+#terminal {
+  background: #000;
+  color: #0f0;
+  padding: 10px;
+  height: 200px;
+  overflow-y: scroll;
+}
+#file-content {
+  background: #f5f5f5;
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: scroll;
+}
