@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@lib/decorators';
+import { Controller, Get, Inject, Post } from '@lib/decorators';
 import type { Request, Response } from 'express';
 import { ScrapeService } from '@app/services';
 
@@ -17,8 +17,8 @@ export default class ScrapeController {
       return;
     }
     try {
-      await this._scrapeService.start(script);
-      res.json({ message: 'Scraping started' });
+      const task = await this._scrapeService.start(script);
+      res.json({ message: 'Scraping started', taskId: task.id });
     } catch (e: any) {
       res.status(400).json({ message: e.message });
     }
@@ -40,9 +40,22 @@ export default class ScrapeController {
     }
   }
 
+  @Post('/cancel')
+  public async cancel(_: Request, res: Response) {
+    this._scrapeService.cancel();
+    res.json({ message: 'Scraping cancelled' });
+  }
+
+  @Get('/tasks')
+  public async tasks(_: Request, res: Response) {
+    res.json(this._scrapeService.getTasks());
+  }
+
   @Get('/logs')
-  public async logs(_: Request, res: Response) {
-    const logs = this._scrapeService.getLogs();
+  public async logs(req: Request, res: Response) {
+    const { id } = req.query;
+    const taskId = typeof id === 'string' ? Number(id) : undefined;
+    const logs = this._scrapeService.getLogs(taskId);
     res.json(logs);
   }
 }
