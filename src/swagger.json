@@ -56,6 +56,30 @@
         ],
         "responses": {"200": {"description": "Theme park"}, "400": {"description": "Not found"}}
       }
+    },
+    "/api/scrape/random": {
+      "get": {
+        "summary": "Scrape random coasters",
+        "responses": {
+          "200": {"description": "Randomly scraped coasters"}
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "List API endpoints",
+        "responses": {
+          "200": {"description": "API endpoints"}
+        }
+      }
+    },
+    "/api": {
+      "get": {
+        "summary": "List API endpoints",
+        "responses": {
+          "200": {"description": "API endpoints"}
+        }
+      }
     }
   }
 }
