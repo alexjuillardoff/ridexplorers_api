@@ -31,6 +31,9 @@
     "/api/coasters/random": {
       "get": {"summary": "Random coaster", "responses": {"200": {"description": "Random coaster"}}}
     },
+    "/api/random-coasters": {
+      "get": {"summary": "Random coasters list", "responses": {"200": {"description": "List of random coasters"}}}
+    },
     "/api/coasters/search": {
       "get": {
         "summary": "Search coasters",
