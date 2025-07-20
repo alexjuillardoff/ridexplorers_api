@@ -39,7 +39,6 @@ The API works with JSON files located under `src/db/`. These files are generated
 | `GET`     | `/` or `/api`              | List of available endpoints.                                                                     |
 | `GET`     | `/api/coasters`            | Returns a paginated list of coasters. Use `offset` and `limit` query parameters.                 |
 | `GET`     | `/api/coasters/:id`        | Returns coaster information by id. Returns `404` if not found.                                   |
-| `GET`     | `/api/coasters/random`     | Returns a random coaster.                                                                        |
 | `GET`     | `/api/random-coasters`     | Returns the list of coasters scraped with `scrape:random`.                   |
 | `GET`     | `/api/coasters/search?q=`  | Returns coasters whose name or park matches the `q` value.                                       |
 | `GET`     | `/api/theme-parks`         | Returns a paginated list of theme parks. Use `offset` and `limit` query parameters.              |
