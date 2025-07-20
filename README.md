@@ -38,6 +38,13 @@ The API works with JSON files located under `src/db/`. These files are generated
 - `npm run scrape:random` – scrape a random set of coasters and store them in `src/db/random-coasters.json`.
 - `npm run scrape:map-coaster-photos` – map image URLs of previously scraped coasters to the configured RCDB base URL.
 
+Scraping tasks can also be controlled at runtime using the following HTTP routes:
+
+- `GET /scrape/start?script=<name>` – launch one of the npm scraping scripts.
+- `POST /scrape/cancel` – cancel the currently running scraping task.
+- `GET /scrape/tasks` – list executed scraping tasks and their status.
+- `GET /scrape/logs?id=<taskId>` – retrieve logs for a given task (defaults to the active one).
+
 > **Note**: by default the RCDB base URL is `https://rcdb.com`. You can override it by setting the `RCDB_URL` environment variable.
 
 ## Endpoints
@@ -51,6 +58,10 @@ The API works with JSON files located under `src/db/`. These files are generated
 | `GET`     | `/api/coasters/search?q=`  | Returns coasters whose name or park matches the `q` value.                                       |
 | `GET`     | `/api/theme-parks`         | Returns a paginated list of theme parks. Use `offset` and `limit` query parameters.              |
 | `GET`     | `/api/theme-parks/:id`     | Returns a theme park by id. Returns `400` if not found.                                          |
+| `GET`     | `/scrape/start`            | Start a scraping script specified via the `script` query param.                                  |
+| `POST`    | `/scrape/cancel`           | Cancel the currently running scraping task.                                                     |
+| `GET`     | `/scrape/tasks`            | List all scraping tasks with their status.                                                      |
+| `GET`     | `/scrape/logs`             | Retrieve logs for the active task or the one specified by `id`.                                |
 
 ## Data files
 - `src/db/coasters.json` – all scraped coasters with mapped image URLs.
