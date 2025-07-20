@@ -1,6 +1,11 @@
 import Server from '@lib/core';
 import dotenv from 'dotenv';
-import { RollerCoastersController, IndexController, ThemeParksController } from '@app/controllers';
+import {
+  RollerCoastersController,
+  IndexController,
+  ThemeParksController,
+  ScrapingController,
+} from '@app/controllers';
 
 class Application {
   _appServer: Server;
@@ -9,7 +14,12 @@ class Application {
     dotenv.config();
 
     this._appServer = new Server();
-    this._appServer.setControllers([IndexController, RollerCoastersController, ThemeParksController]);
+    this._appServer.setControllers([
+      IndexController,
+      RollerCoastersController,
+      ThemeParksController,
+      ScrapingController,
+    ]);
   }
 
   start() {
