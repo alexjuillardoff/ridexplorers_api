@@ -1,5 +1,9 @@
 import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import {
+  Strategy as GoogleStrategy,
+  type Profile,
+  type VerifyCallback,
+} from 'passport-google-oauth20';
 import session from 'express-session';
 import type { Express } from 'express';
 
@@ -22,13 +26,18 @@ export function setupAuth(app: Express) {
         clientSecret: GOOGLE_CLIENT_SECRET,
         callbackURL: '/auth/google/callback',
       },
-      (_accessToken, _refreshToken, profile, done) => {
+      (
+        _accessToken: string,
+        _refreshToken: string,
+        profile: Profile,
+        done: VerifyCallback,
+      ) => {
         done(null, profile);
       }
     )
   );
 
-  passport.serializeUser((user, done) => {
+  passport.serializeUser((user: Express.User, done) => {
     done(null, user);
   });
   passport.deserializeUser((obj: any, done) => {
