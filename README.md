@@ -45,10 +45,15 @@ Les variables suivantes peuvent être définies dans un fichier `.env` :
 - `RATE_LIMIT_MAX` – nombre maximum de requêtes par fenêtre (par défaut `100`)
 - `GOOGLE_CLIENT_ID` – identifiant OAuth2 Google
 - `GOOGLE_CLIENT_SECRET` – secret OAuth2 Google
+- `GOOGLE_CALLBACK_URL` – URL de redirection Google (par défaut `/auth/google/callback`)
 - `SESSION_SECRET` – clé utilisée pour chiffrer la session
 
 ```bash
 # .env
+GOOGLE_CLIENT_ID=<votre identifiant>
+GOOGLE_CLIENT_SECRET=<votre secret>
+# URL également enregistrée dans la console Google
+GOOGLE_CALLBACK_URL=http://localhost:8000/auth/google/callback
 CORS_ORIGIN=http://localhost:5173
 ```
 
@@ -64,6 +69,8 @@ Si `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET` sont définis, un système
 d'authentification OAuth2 via Google est disponible sur `/auth/google`.
 Les sessions sont gérées par `express-session` et permettent ensuite
 d'accéder aux routes protégées sans envoyer le jeton `API_TOKEN`.
+Pensez à ajouter l'URL configurée dans `GOOGLE_CALLBACK_URL` (ou `/auth/google/callback` par défaut)
+parmi les "URI de redirection autorisées" du client OAuth dans la console Google Cloud.
 
 ## Scraping des données
 

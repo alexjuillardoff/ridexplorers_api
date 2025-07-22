@@ -11,6 +11,7 @@ export function setupAuth(app: Express) {
   const {
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
+    GOOGLE_CALLBACK_URL,
     SESSION_SECRET = 'change-me',
   } = process.env;
 
@@ -24,7 +25,7 @@ export function setupAuth(app: Express) {
       {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: '/auth/google/callback',
+        callbackURL: GOOGLE_CALLBACK_URL ?? '/auth/google/callback',
       },
       (
         _accessToken: string,
