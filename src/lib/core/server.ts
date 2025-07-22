@@ -41,6 +41,10 @@ export default class Server {
     this._app.use(
       helmet({
         contentSecurityPolicy: { directives },
+        // Disable HSTS when running without HTTPS to avoid browsers forcing
+        // HTTPS on subsequent requests which leads to SSL errors on HTTP-only
+        // deployments.
+        hsts: false,
       })
     );
     const windowMs = Number(process.env.RATE_LIMIT_WINDOW_MS ?? 60_000);
