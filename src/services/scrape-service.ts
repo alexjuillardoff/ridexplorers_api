@@ -1,8 +1,9 @@
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
-import { readdir, stat, readFile, writeFile } from 'fs/promises';
+import { readdir, stat, readFile as fsReadFile, writeFile as fsWriteFile } from 'fs/promises';
 import path from 'path';
 import { io } from '@lib/core';
 import Service from '@lib/decorators/service-decorator';
+import { sanitizeFilename } from '@app/utils';
 
 type TaskStatus = 'running' | 'completed' | 'failed' | 'cancelled';
 
@@ -98,14 +99,16 @@ export default class ScrapeService {
   }
 
   async readFile(name: string): Promise<any> {
+    sanitizeFilename(name);
     const dir = path.join(process.cwd(), 'src', 'db', name);
-    const content = await readFile(dir, 'utf-8');
+    const content = await fsReadFile(dir, 'utf-8');
     return JSON.parse(content);
   }
 
   async saveFile(name: string, data: Buffer): Promise<void> {
+    sanitizeFilename(name);
     const dir = path.join(process.cwd(), 'src', 'db', name);
-    await writeFile(dir, data);
+    await fsWriteFile(dir, data);
   }
 
   cancel(): void {

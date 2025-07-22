@@ -10,7 +10,8 @@
     "scrape": "ts-node -r tsconfig-paths/register ./src/scraping/main.ts && npm run scrape:map-coaster-photos",
     "scrape:theme-parks": "ts-node -r tsconfig-paths/register ./src/scraping/scrape-theme-parks",
     "scrape:map-coaster-photos": "ts-node -r tsconfig-paths/register ./src/scraping/map-coaster-photos.ts",
-    "scrape:random": "ts-node -r tsconfig-paths/register ./src/scraping/scrape-random-coasters.ts"
+    "scrape:random": "ts-node -r tsconfig-paths/register ./src/scraping/scrape-random-coasters.ts",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +42,8 @@
     "ts-node": "10.9.1",
     "tsc-alias": "1.8.2",
     "tsconfig-paths": "4.1.1",
-    "typescript": "4.9.4"
+    "typescript": "4.9.4",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   }
 }
