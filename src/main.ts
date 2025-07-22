@@ -39,7 +39,16 @@ class Application {
       },
     ]);
 
-    this._appServer.app.use('/connector', connector);
+    const connectorRouter = express.Router();
+    connectorRouter.use((req, _res, next) => {
+      if (typeof req.query.target === 'string' && req.query.target.trim() === '') {
+        delete req.query.target;
+      }
+      next();
+    });
+    connectorRouter.use(connector);
+
+    this._appServer.app.use('/connector', connectorRouter);
   }
 
   start() {
