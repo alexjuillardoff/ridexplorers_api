@@ -3,28 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RIDEXPLORERS API Dashboard</title>
+  <title>RIDEXPLORERS API</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="root">
-  <h1 class="api-name">RIDEXPLORERS API</h1>
-  <h2>Scraping Dashboard</h2>
-  <nav>
-    <a href="/docs" target="_blank">Swagger Docs</a>
-  </nav>
-  <div id="actions">
-    <button data-script="scrape">Run Scrape</button>
-    <button data-script="scrape:theme-parks">Scrape Theme Parks</button>
-    <button data-script="scrape:random">Scrape Random</button>
-    <button data-script="scrape:map-coaster-photos">Map Coaster Photos</button>
-  </div>
-  <h2>Data files</h2>
-  <ul id="files"></ul>
-  <pre id="file-content"></pre>
-  </div>
-  <h2>Logs</h2>
-  <pre id="terminal"></pre>
+  <header>
+    <h1>RIDEXPLORERS API</h1>
+    <nav><a href="/docs" target="_blank">Swagger Docs</a></nav>
+  </header>
+  <main>
+    <section id="actions">
+      <h2>Scrape Actions</h2>
+      <button data-script="scrape">Run Scrape</button>
+      <button data-script="scrape:theme-parks">Theme Parks</button>
+      <button data-script="scrape:random">Random Coasters</button>
+      <button data-script="scrape:map-coaster-photos">Map Photos</button>
+    </section>
+    <section>
+      <h2>Data Files</h2>
+      <ul id="files"></ul>
+      <pre id="file-content"></pre>
+    </section>
+    <section>
+      <h2>Logs</h2>
+      <pre id="terminal"></pre>
+    </section>
+  </main>
   <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
 </body>
