@@ -18,6 +18,7 @@
       "@app/constants": ["constants"],
       "@app/db": ["db"],
       "@app/types": ["types"],
+      "@app/auth": ["auth"],
       "@scraping": ["scraping"],
       "@scraping/*": ["scraping/*"],
       "@config": ["config"]
