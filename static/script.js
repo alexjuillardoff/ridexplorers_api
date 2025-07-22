@@ -10,12 +10,18 @@ function appendLog(msg) {
 
 socket.on('log', appendLog);
 socket.on('error', appendLog);
-socket.on('done', code => appendLog(`\nProcess finished with code ${code}\n`));
+socket.on('done', msg => {
+  appendLog(msg);
+  loadFiles();
+});
 
 function startScript(script) {
   fetch(`/scrape/start?script=${encodeURIComponent(script)}`)
     .then(r => r.json())
-    .then(d => appendLog(`\n${d.message}\n`))
+    .then(d => {
+      appendLog(`\n${d.message}\n`);
+      loadLogs();
+    })
     .catch(e => appendLog(`\nError: ${e}\n`));
 }
 
