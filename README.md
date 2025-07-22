@@ -40,6 +40,12 @@ Les variables suivantes peuvent être définies dans un fichier `.env` :
 - `RCDB_URL` – URL de base utilisée pour le scraping de RCDB
 - `API_TOKEN` – jeton attendu dans l'en-tête `Authorization` pour sécuriser
   certains endpoints
+- `CORS_ORIGIN` – origine autorisée pour les requêtes CORS
+
+```bash
+# .env
+CORS_ORIGIN=http://localhost:5173
+```
 
 ## Scraping des données
 
