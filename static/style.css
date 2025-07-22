@@ -23,10 +23,6 @@ section {
   margin-bottom: 2rem;
 }
 
-#actions button {
-  margin: 0.25rem 0.5rem 0.25rem 0;
-  padding: 0.4rem 0.8rem;
-}
 
 pre {
   font-family: monospace;

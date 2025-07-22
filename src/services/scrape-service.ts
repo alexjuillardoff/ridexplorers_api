@@ -1,5 +1,5 @@
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
-import { readdir, stat, readFile } from 'fs/promises';
+import { readdir, stat, readFile, writeFile } from 'fs/promises';
 import path from 'path';
 import { io } from '@lib/core';
 import Service from '@lib/decorators/service-decorator';
@@ -101,6 +101,11 @@ export default class ScrapeService {
     const dir = path.join(process.cwd(), 'src', 'db', name);
     const content = await readFile(dir, 'utf-8');
     return JSON.parse(content);
+  }
+
+  async saveFile(name: string, data: Buffer): Promise<void> {
+    const dir = path.join(process.cwd(), 'src', 'db', name);
+    await writeFile(dir, data);
   }
 
   cancel(): void {

@@ -2,6 +2,7 @@ const socket = io();
 const terminal = document.getElementById('terminal');
 const filesList = document.getElementById('files');
 const fileContent = document.getElementById('file-content');
+const fileInput = document.getElementById('file-upload');
 
 function appendLog(msg) {
   terminal.textContent += msg;
@@ -15,20 +16,22 @@ socket.on('done', msg => {
   loadFiles();
 });
 
-function startScript(script) {
-  fetch(`/scrape/start?script=${encodeURIComponent(script)}`)
+function uploadFile(file) {
+  const data = new FormData();
+  data.append('file', file);
+  fetch('/scrape/upload', { method: 'POST', body: data })
     .then(r => r.json())
     .then(d => {
       appendLog(`\n${d.message}\n`);
-      loadLogs();
+      loadFiles();
     })
     .catch(e => appendLog(`\nError: ${e}\n`));
 }
 
-document.getElementById('actions').addEventListener('click', (e) => {
-  if (e.target.tagName === 'BUTTON') {
-    startScript(e.target.getAttribute('data-script'));
-  }
+fileInput.addEventListener('change', (e) => {
+  const files = Array.from(e.target.files);
+  files.forEach(uploadFile);
+  e.target.value = '';
 });
 
 function loadFiles() {
