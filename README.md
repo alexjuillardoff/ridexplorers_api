@@ -68,8 +68,14 @@ Scraping tasks can also be controlled at runtime using the following HTTP routes
 | `GET`     | `/scrape/tasks`            | List all scraping tasks with their status.                                                      |
 | `GET`     | `/scrape/logs`             | Retrieve logs for the active task or the one specified by `id`.                                |
 | `GET`     | `/scrape/files`            | List available scraped JSON files.                                                              |
-| `GET`     | `/scrape/files/:name`      | Retrieve the content of a scraped file.                                                         |
-| `POST`    | `/scrape/upload`           | Upload a JSON file to the server.                                                              |
+| `GET`     | `/scrape/files/:name`      | Retrieve the content of a scraped file. |
+| `POST`    | `/scrape/upload`           | Upload a JSON file to the server. |
+| `GET`     | `/explorer.html`           | Web interface to browse and manage files under `src/db`. |
+| `ANY`     | `/connector`               | elFinder connector providing file operations for the explorer. |
+
+
+## File Explorer
+A web interface using `elFinder` is available at [`/explorer.html`](./explorer.html). It allows browsing and managing the JSON files in `src/db` via the `/connector` endpoint.
 
 ## Data files
 - `src/db/coasters.json` – all scraped coasters with mapped image URLs.
