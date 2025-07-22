@@ -43,6 +43,9 @@ Les variables suivantes peuvent être définies dans un fichier `.env` :
 - `CORS_ORIGIN` – origine autorisée pour les requêtes CORS
 - `RATE_LIMIT_WINDOW_MS` – durée de la fenêtre de limitation (par défaut `60000`)
 - `RATE_LIMIT_MAX` – nombre maximum de requêtes par fenêtre (par défaut `100`)
+- `GOOGLE_CLIENT_ID` – identifiant OAuth2 Google
+- `GOOGLE_CLIENT_SECRET` – secret OAuth2 Google
+- `SESSION_SECRET` – clé utilisée pour chiffrer la session
 
 ```bash
 # .env
@@ -56,6 +59,11 @@ en-têtes HTTP sécurisés et `express-rate-limit` pour limiter le nombre de
 requêtes par client. Par défaut, chaque adresse IP est limitée à 100 requêtes
 par minute. Ces valeurs peuvent être ajustées via les variables d'environnement
 `RATE_LIMIT_WINDOW_MS` et `RATE_LIMIT_MAX`.
+
+Si `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET` sont définis, un système
+d'authentification OAuth2 via Google est disponible sur `/auth/google`.
+Les sessions sont gérées par `express-session` et permettent ensuite
+d'accéder aux routes protégées sans envoyer le jeton `API_TOKEN`.
 
 ## Scraping des données
 
