@@ -41,11 +41,21 @@ Les variables suivantes peuvent être définies dans un fichier `.env` :
 - `API_TOKEN` – jeton attendu dans l'en-tête `Authorization` pour sécuriser
   certains endpoints
 - `CORS_ORIGIN` – origine autorisée pour les requêtes CORS
+- `RATE_LIMIT_WINDOW_MS` – durée de la fenêtre de limitation (par défaut `60000`)
+- `RATE_LIMIT_MAX` – nombre maximum de requêtes par fenêtre (par défaut `100`)
 
 ```bash
 # .env
 CORS_ORIGIN=http://localhost:5173
 ```
+
+## Sécurité
+
+Le serveur Express utilise désormais le middleware `helmet` pour ajouter des
+en-têtes HTTP sécurisés et `express-rate-limit` pour limiter le nombre de
+requêtes par client. Par défaut, chaque adresse IP est limitée à 100 requêtes
+par minute. Ces valeurs peuvent être ajustées via les variables d'environnement
+`RATE_LIMIT_WINDOW_MS` et `RATE_LIMIT_MAX`.
 
 ## Scraping des données
 

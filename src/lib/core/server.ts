@@ -4,6 +4,8 @@ import type { Route } from '@lib/types';
 import { MetadataKeys } from '@lib/types';
 import type { Express, Handler } from 'express';
 import express, { Router } from 'express';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import { Server as HttpServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import cors from 'cors';
@@ -29,6 +31,17 @@ export default class Server {
 
   constructor() {
     this._app = express();
+    this._app.use(helmet());
+    const windowMs = Number(process.env.RATE_LIMIT_WINDOW_MS ?? 60_000);
+    const max = Number(process.env.RATE_LIMIT_MAX ?? 100);
+    this._app.use(
+      rateLimit({
+        windowMs,
+        max,
+        standardHeaders: true,
+        legacyHeaders: false,
+      })
+    );
     this._app.use(express.json());
     this._app.use(express.static('static'));
     this._app.use(cors({ origin: process.env.CORS_ORIGIN }));
