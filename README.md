@@ -48,6 +48,7 @@ Scraping tasks can also be controlled at runtime using the following HTTP routes
 - `GET /scrape/logs?id=<taskId>` – retrieve logs for a given task (defaults to the active one).
 - `GET /scrape/files` – list available scraped JSON files.
 - `GET /scrape/files/:name` – retrieve the content of a scraped file.
+- `POST /scrape/upload` – manually upload a JSON file to `src/db/`.
 
 > **Note**: by default the RCDB base URL is `https://rcdb.com`. You can override it by setting the `RCDB_URL` environment variable.
 
@@ -68,6 +69,7 @@ Scraping tasks can also be controlled at runtime using the following HTTP routes
 | `GET`     | `/scrape/logs`             | Retrieve logs for the active task or the one specified by `id`.                                |
 | `GET`     | `/scrape/files`            | List available scraped JSON files.                                                              |
 | `GET`     | `/scrape/files/:name`      | Retrieve the content of a scraped file.                                                         |
+| `POST`    | `/scrape/upload`           | Upload a JSON file to the server.                                                              |
 
 ## Data files
 - `src/db/coasters.json` – all scraped coasters with mapped image URLs.

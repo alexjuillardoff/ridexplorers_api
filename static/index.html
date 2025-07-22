@@ -12,15 +12,9 @@
     <nav><a href="/docs" target="_blank">Swagger Docs</a></nav>
   </header>
   <main>
-    <section id="actions">
-      <h2>Scrape Actions</h2>
-      <button data-script="scrape">Run Scrape</button>
-      <button data-script="scrape:theme-parks">Theme Parks</button>
-      <button data-script="scrape:random">Random Coasters</button>
-      <button data-script="scrape:map-coaster-photos">Map Photos</button>
-    </section>
     <section>
       <h2>Data Files</h2>
+      <input type="file" id="file-upload" accept="application/json" multiple />
       <ul id="files"></ul>
       <pre id="file-content"></pre>
     </section>

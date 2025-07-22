@@ -1,5 +1,6 @@
 import { Controller, Get, Inject, Post } from '@lib/decorators';
 import type { Request, Response } from 'express';
+import multer from 'multer';
 import { ScrapeService } from '@app/services';
 
 @Controller('/scrape')
@@ -57,5 +58,26 @@ export default class ScrapeController {
     const taskId = typeof id === 'string' ? Number(id) : undefined;
     const logs = this._scrapeService.getLogs(taskId);
     res.json(logs);
+  }
+
+  @Post('/upload')
+  public async upload(req: Request, res: Response) {
+    const upload = multer().single('file');
+    upload(req, res, async (err: any) => {
+      if (err) {
+        res.status(400).json({ message: err.message });
+        return;
+      }
+      if (!req.file) {
+        res.status(400).json({ message: 'No file uploaded' });
+        return;
+      }
+      try {
+        await this._scrapeService.saveFile(req.file.originalname, req.file.buffer);
+        res.json({ message: 'File uploaded' });
+      } catch (e: any) {
+        res.status(500).json({ message: e.message });
+      }
+    });
   }
 }

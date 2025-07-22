@@ -80,6 +80,24 @@
         "responses": {"200": {"description": "File content"}, "404": {"description": "Not found"}}
       }
     },
+    "/scrape/upload": {
+      "post": {
+        "summary": "Upload JSON file",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {"type": "string", "format": "binary"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {"200": {"description": "File uploaded"}, "400": {"description": "Error"}}
+      }
+    },
     "/scrape/tasks": {
       "get": {"summary": "List scraping tasks", "responses": {"200": {"description": "Tasks"}}}
     },
