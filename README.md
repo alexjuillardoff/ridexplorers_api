@@ -2,6 +2,8 @@
 
 RIDEXPLORERS API exposes a simple REST API containing data scraped from [RCDB](https://rcdb.com). It is built with **TypeScript** using **Express** and provides endpoints to query roller coasters and theme parks information. Documentation generated from the OpenAPI specification is available at `/docs` when the server is running.
 
+This project requires **Node.js 18** or later.
+
 ## Getting started
 
 1. **Install dependencies**
@@ -44,6 +46,8 @@ Scraping tasks can also be controlled at runtime using the following HTTP routes
 - `POST /scrape/cancel` – cancel the currently running scraping task.
 - `GET /scrape/tasks` – list executed scraping tasks and their status.
 - `GET /scrape/logs?id=<taskId>` – retrieve logs for a given task (defaults to the active one).
+- `GET /scrape/files` – list available scraped JSON files.
+- `GET /scrape/files/:name` – retrieve the content of a scraped file.
 
 > **Note**: by default the RCDB base URL is `https://rcdb.com`. You can override it by setting the `RCDB_URL` environment variable.
 
@@ -62,6 +66,8 @@ Scraping tasks can also be controlled at runtime using the following HTTP routes
 | `POST`    | `/scrape/cancel`           | Cancel the currently running scraping task.                                                     |
 | `GET`     | `/scrape/tasks`            | List all scraping tasks with their status.                                                      |
 | `GET`     | `/scrape/logs`             | Retrieve logs for the active task or the one specified by `id`.                                |
+| `GET`     | `/scrape/files`            | List available scraped JSON files.                                                              |
+| `GET`     | `/scrape/files/:name`      | Retrieve the content of a scraped file.                                                         |
 
 ## Data files
 - `src/db/coasters.json` – all scraped coasters with mapped image URLs.
