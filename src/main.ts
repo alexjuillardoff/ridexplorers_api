@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import elFinder from 'elfinder-node';
+import apiAuth from './middleware/api-auth';
 import {
   RollerCoastersController,
   IndexController,
@@ -26,9 +27,12 @@ class Application {
       ScrapeController,
     ]);
 
+    // Protect routes with API token
+    this._appServer.app.use('/scrape', apiAuth);
+
     // Serve files under src/db so the connector can generate URLs
     const dbPath = path.join(process.cwd(), 'src', 'db');
-    this._appServer.app.use('/db', express.static(dbPath));
+    this._appServer.app.use('/db', apiAuth, express.static(dbPath));
 
     const connector = elFinder([
       {
@@ -48,7 +52,7 @@ class Application {
     });
     connectorRouter.use(connector);
 
-    this._appServer.app.use('/connector', connectorRouter);
+    this._appServer.app.use('/connector', apiAuth, connectorRouter);
   }
 
   start() {

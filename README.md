@@ -38,6 +38,8 @@ Les variables suivantes peuvent être définies dans un fichier `.env` :
 
 - `PORT` – port d'écoute de l'API (par défaut `8000`)
 - `RCDB_URL` – URL de base utilisée pour le scraping de RCDB
+- `API_TOKEN` – jeton attendu dans l'en-tête `Authorization` pour sécuriser
+  certains endpoints
 
 ## Scraping des données
 
