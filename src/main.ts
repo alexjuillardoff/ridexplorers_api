@@ -10,7 +10,9 @@ import {
   ThemeParksController,
   RandomCoastersController,
   ScrapeController,
+  AuthController,
 } from '@app/controllers';
+import { setupAuth } from '@app/auth/passport';
 
 class Application {
   _appServer: Server;
@@ -19,12 +21,14 @@ class Application {
     dotenv.config();
 
     this._appServer = new Server();
+    setupAuth(this._appServer.app);
     this._appServer.setControllers([
       IndexController,
       RollerCoastersController,
       ThemeParksController,
       RandomCoastersController,
       ScrapeController,
+      AuthController,
     ]);
 
     // Protect routes with API token
