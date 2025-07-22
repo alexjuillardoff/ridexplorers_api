@@ -56,6 +56,39 @@
         ],
         "responses": {"200": {"description": "Theme park"}, "400": {"description": "Not found"}}
       }
+    },
+    "/scrape/start": {
+      "get": {
+        "summary": "Start scraping script",
+        "parameters": [{"name": "script", "in": "query", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Scraping started"}, "400": {"description": "Error"}}
+      }
+    },
+    "/scrape/cancel": {
+      "post": {
+        "summary": "Cancel scraping task",
+        "responses": {"200": {"description": "Scraping cancelled"}}
+      }
+    },
+    "/scrape/files": {
+      "get": {"summary": "List scraped files", "responses": {"200": {"description": "Files list"}}}
+    },
+    "/scrape/files/{name}": {
+      "get": {
+        "summary": "Get scraped file",
+        "parameters": [{"name": "name", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "File content"}, "404": {"description": "Not found"}}
+      }
+    },
+    "/scrape/tasks": {
+      "get": {"summary": "List scraping tasks", "responses": {"200": {"description": "Tasks"}}}
+    },
+    "/scrape/logs": {
+      "get": {
+        "summary": "Retrieve scraping logs",
+        "parameters": [{"name": "id", "in": "query", "schema": {"type": "integer"}}],
+        "responses": {"200": {"description": "Logs"}}
+      }
     }
   }
 }
