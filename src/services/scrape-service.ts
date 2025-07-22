@@ -1,5 +1,6 @@
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
-import { readdir, stat, readFile } from 'fs/promises';
+import { readdir, stat, readFile, writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
 import path from 'path';
 import { io } from '@lib/core';
 import Service from '@lib/decorators/service-decorator';
@@ -101,6 +102,19 @@ export default class ScrapeService {
     const dir = path.join(process.cwd(), 'src', 'db', name);
     const content = await readFile(dir, 'utf-8');
     return JSON.parse(content);
+  }
+
+  async writeFile(name: string, data: any): Promise<void> {
+    const dir = path.join(process.cwd(), 'src', 'db', name);
+    await writeFile(dir, JSON.stringify(data, null, 2), 'utf-8');
+  }
+
+  getFilePath(name: string): string {
+    const dir = path.join(process.cwd(), 'src', 'db', name);
+    if (!existsSync(dir)) {
+      throw new Error('File not found');
+    }
+    return dir;
   }
 
   cancel(): void {

@@ -44,6 +44,10 @@ Scraping tasks can also be controlled at runtime using the following HTTP routes
 - `POST /scrape/cancel` – cancel the currently running scraping task.
 - `GET /scrape/tasks` – list executed scraping tasks and their status.
 - `GET /scrape/logs?id=<taskId>` – retrieve logs for a given task (defaults to the active one).
+- `GET /scrape/files` – list available JSON files.
+- `GET /scrape/files/<name>` – read the content of a JSON file.
+- `GET /scrape/files/<name>/download` – download a JSON file.
+- `POST /scrape/files/<name>` – upload and replace a JSON file with the request body.
 
 > **Note**: by default the RCDB base URL is `https://rcdb.com`. You can override it by setting the `RCDB_URL` environment variable.
 
@@ -62,6 +66,10 @@ Scraping tasks can also be controlled at runtime using the following HTTP routes
 | `POST`    | `/scrape/cancel`           | Cancel the currently running scraping task.                                                     |
 | `GET`     | `/scrape/tasks`            | List all scraping tasks with their status.                                                      |
 | `GET`     | `/scrape/logs`             | Retrieve logs for the active task or the one specified by `id`.                                |
+| `GET`     | `/scrape/files`            | List available JSON files.                                |
+| `GET`     | `/scrape/files/:name`      | Return the content of a specific JSON file.                |
+| `GET`     | `/scrape/files/:name/download` | Download a JSON file.                                      |
+| `POST`    | `/scrape/files/:name`      | Upload JSON data to replace a file.                        |
 
 ## Data files
 - `src/db/coasters.json` – all scraped coasters with mapped image URLs.

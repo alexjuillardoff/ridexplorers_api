@@ -40,6 +40,26 @@ export default class ScrapeController {
     }
   }
 
+  @Get('/files/:name/download')
+  public async download(req: Request, res: Response) {
+    try {
+      const filePath = this._scrapeService.getFilePath(req.params.name);
+      res.download(filePath);
+    } catch (e) {
+      res.status(404).json({ message: 'File not found' });
+    }
+  }
+
+  @Post('/files/:name')
+  public async upload(req: Request, res: Response) {
+    try {
+      await this._scrapeService.writeFile(req.params.name, req.body);
+      res.json({ message: 'File uploaded' });
+    } catch (e: any) {
+      res.status(400).json({ message: 'Upload failed', cause: e.message });
+    }
+  }
+
   @Post('/cancel')
   public async cancel(_: Request, res: Response) {
     this._scrapeService.cancel();
