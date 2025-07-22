@@ -4,7 +4,7 @@ import type { Route } from '@lib/types';
 import { MetadataKeys } from '@lib/types';
 import type { Express, Handler } from 'express';
 import express, { Router } from 'express';
-import helmet from 'helmet';
+import helmet, { contentSecurityPolicy } from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { Server as HttpServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
@@ -31,7 +31,18 @@ export default class Server {
 
   constructor() {
     this._app = express();
-    this._app.use(helmet());
+    const directives = contentSecurityPolicy.getDefaultDirectives();
+    directives['script-src'] = [
+      "'self'",
+      "'unsafe-inline'",
+      'https://cdnjs.cloudflare.com',
+    ];
+    directives['style-src'] = ["'self'", 'https:', "'unsafe-inline'"];
+    this._app.use(
+      helmet({
+        contentSecurityPolicy: { directives },
+      })
+    );
     const windowMs = Number(process.env.RATE_LIMIT_WINDOW_MS ?? 60_000);
     const max = Number(process.env.RATE_LIMIT_MAX ?? 100);
     this._app.use(
