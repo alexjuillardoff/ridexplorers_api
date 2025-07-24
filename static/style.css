@@ -61,3 +61,17 @@ ul#files li:hover {
 .auth-info {
   margin-top: 0.5rem;
 }
+
+#login-form {
+  display: none;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+#login-form input {
+  padding: 0.25rem;
+}
+
+#login-form button {
+  padding: 0.25rem 0.5rem;
+}
