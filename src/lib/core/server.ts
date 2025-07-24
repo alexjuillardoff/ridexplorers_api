@@ -7,6 +7,7 @@ import express, { Router } from 'express';
 import { Server as HttpServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../../swagger.json';
 import { authMiddleware } from '@lib/middleware/auth';
@@ -31,6 +32,8 @@ export default class Server {
   constructor() {
     this._app = express();
     this._app.use(express.json());
+    // Activation du parseur de cookies pour lire les préférences utilisateurs
+    this._app.use(cookieParser());
     this._app.use(express.static('static'));
     this._app.use(cors());
     this._app.get('/swagger.json', (_req, res) => res.json(swaggerDocument));
