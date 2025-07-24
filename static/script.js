@@ -19,13 +19,35 @@ socket.on('done', msg => {
 function uploadFile(file) {
   const data = new FormData();
   data.append('file', file);
-  fetch('/scrape/upload', { method: 'POST', body: data })
-    .then(r => r.json())
-    .then(d => {
-      appendLog(`\n${d.message}\n`);
+  const toast = new window.Toast({
+    position: 'top-right',
+    toastMsg: `Uploading ${file.name}... 0%`,
+    autoCloseTime: 0,
+    showProgress: true,
+    canClose: false,
+    type: 'info',
+    theme: 'dark',
+  });
+  const xhr = new XMLHttpRequest();
+  xhr.upload.addEventListener('progress', (e) => {
+    if (e.lengthComputable) {
+      const percent = Math.round((e.loaded / e.total) * 100);
+      toast.update({ toastMsg: `Uploading ${file.name}... ${percent}%` });
+    }
+  });
+  xhr.addEventListener('load', () => {
+    if (xhr.status === 200) {
+      toast.update({ toastMsg: `${file.name} uploaded`, type: 'success', autoCloseTime: 3000, canClose: true });
       loadFiles();
-    })
-    .catch(e => appendLog(`\nError: ${e}\n`));
+    } else {
+      toast.update({ toastMsg: `Error uploading ${file.name}`, type: 'error', autoCloseTime: 3000, canClose: true });
+    }
+  });
+  xhr.addEventListener('error', () => {
+    toast.update({ toastMsg: `Error uploading ${file.name}`, type: 'error', autoCloseTime: 3000, canClose: true });
+  });
+  xhr.open('POST', '/scrape/upload');
+  xhr.send(data);
 }
 
 fileInput.addEventListener('change', (e) => {
@@ -39,6 +61,11 @@ function loadFiles() {
     .then(r => r.json())
     .then(files => {
       filesList.innerHTML = '';
+      if (files.length === 0) {
+        filesList.textContent = 'No files uploaded';
+        fileContent.textContent = '';
+        return;
+      }
       files.forEach(f => {
         const li = document.createElement('li');
         const date = new Date(f.lastModified).toLocaleString();
