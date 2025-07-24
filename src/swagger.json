@@ -6,7 +6,7 @@
     "description": "API providing data about roller coasters and theme parks"
   },
   "servers": [
-    { "url": "http://localhost:8000" }
+    { "url": "/" }
   ],
   "paths": {
     "/api/coasters": {
