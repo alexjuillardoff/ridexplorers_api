@@ -30,6 +30,8 @@ Le serveur lit plusieurs variables facultatives dans un fichier `.env` :
 
 - `PORT` – port sur lequel l'API sera accessible (défaut : `8000`).
 - `RCDB_URL` – URL de base utilisée pour le scraping de RCDB.
+- `AUTH_USER` – nom d'utilisateur pour l'authentification Basic.
+- `AUTH_PASSWORD` – mot de passe associé.
 
 ### Scraping des données
 L'API fonctionne avec des fichiers JSON situés dans `src/db/`. Ces fichiers sont générés en scrappant RCDB. Plusieurs scripts npm sont fournis :

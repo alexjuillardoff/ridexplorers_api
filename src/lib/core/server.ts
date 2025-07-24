@@ -9,6 +9,7 @@ import { Server as SocketServer } from 'socket.io';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../../swagger.json';
+import { authMiddleware } from '@lib/middleware/auth';
 
 export let io: SocketServer;
 
@@ -34,6 +35,7 @@ export default class Server {
     this._app.use(cors());
     this._app.get('/swagger.json', (_req, res) => res.json(swaggerDocument));
     this._app.use('/docs', swaggerUi.serve, swaggerUi.setup(undefined, { swaggerUrl: '/swagger.json' }));
+    this._app.use(authMiddleware);
     this._port = Number(process.env.PORT ?? DEFAULT_SERVER_PORT);
     this._diContainer = DiContainer.getInstance();
   }
