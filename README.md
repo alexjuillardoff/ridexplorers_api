@@ -2,6 +2,16 @@
 
 RIDEXPLORERS API fournit une API REST simple contenant des données récupérées sur [RCDB](https://rcdb.com). Elle est construite en **TypeScript** avec **Express** et expose des points d'entrées pour interroger les montagnes russes et les parcs d'attractions. Une documentation générée à partir de la spécification OpenAPI est disponible sur `/docs` lorsque le serveur est lancé.
 
+## Fonctionnalités
+
+- Interrogation des montagnes russes et des parcs d'attractions via des routes REST.
+- Recherche par nom ou par parc.
+- Sélection aléatoire de montagnes russes préalablement scrappées.
+- Lancement et suivi des scripts de scraping depuis l'API ou l'interface web.
+- Téléversement et lecture de fichiers JSON de données.
+- Authentification Basic configurée par variables d'environnement.
+- Consentement aux cookies conforme RGPD via l'endpoint `/cookies/consent` et une bannière d'information.
+
 Ce projet nécessite **Node.js 18** ou plus récent.
 
 ## Démarrage rapide
