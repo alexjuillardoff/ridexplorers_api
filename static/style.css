@@ -76,6 +76,12 @@ ul#files li:hover {
   padding: 0.25rem 0.5rem;
 }
 
+#logout-button {
+  display: none;
+  margin-bottom: 1rem;
+  padding: 0.25rem 0.5rem;
+}
+
 .cookie-banner {
   display: none;
   position: fixed;

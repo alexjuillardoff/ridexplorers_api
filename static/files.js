@@ -4,6 +4,7 @@ const fileInput = document.getElementById('file-upload');
 const loginForm = document.getElementById('login-form');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
+const logoutButton = document.getElementById('logout-button');
 
 function authToken() {
   return localStorage.getItem('authToken') || '';
@@ -23,18 +24,37 @@ function hideLogin() {
   loginForm.style.display = 'none';
 }
 
+function showLogout() {
+  logoutButton.style.display = 'inline-block';
+}
+
+function hideLogout() {
+  logoutButton.style.display = 'none';
+}
+
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const token = btoa(`${usernameInput.value}:${passwordInput.value}`);
   localStorage.setItem('authToken', token);
   hideLogin();
+  showLogout();
   loadFiles();
+});
+
+logoutButton.addEventListener('click', () => {
+  localStorage.removeItem('authToken');
+  filesList.innerHTML = '';
+  fileContent.textContent = '';
+  hideLogout();
+  showLogin();
 });
 
 function authFetch(url, options = {}) {
   options.headers = { ...(options.headers || {}), ...authHeader() };
   return fetch(url, options).then((r) => {
     if (r.status === 401) {
+      localStorage.removeItem('authToken');
+      hideLogout();
       showLogin();
       throw new Error('Unauthorized');
     }
@@ -122,6 +142,8 @@ function loadFile(name) {
 }
 
 if (authToken()) {
+  hideLogin();
+  showLogout();
   loadFiles();
 } else {
   showLogin();
