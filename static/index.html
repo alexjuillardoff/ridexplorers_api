@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RIDEXPLORERS API</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/typescript-toastify@1.0.4/lib/style.css" />
 </head>
 <body>
   <header>
     <h1>RIDEXPLORERS API</h1>
     <nav>
-      <a href="/docs" target="_blank">Swagger Docs</a> |
-      <a href="/explorer.html" target="_blank">File Explorer</a>
+      <a href="/docs" target="_blank">Swagger Docs</a>
     </nav>
   </header>
   <main>
@@ -27,6 +27,10 @@
     </section>
   </main>
   <script src="/socket.io/socket.io.js"></script>
+  <script type="module">
+    import Toast from 'https://unpkg.com/typescript-toastify@1.0.4/lib/index.js';
+    window.Toast = Toast;
+  </script>
   <script src="script.js"></script>
 </body>
 </html>

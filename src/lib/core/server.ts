@@ -32,7 +32,8 @@ export default class Server {
     this._app.use(express.json());
     this._app.use(express.static('static'));
     this._app.use(cors());
-    this._app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    this._app.get('/swagger.json', (_req, res) => res.json(swaggerDocument));
+    this._app.use('/docs', swaggerUi.serve, swaggerUi.setup(undefined, { swaggerUrl: '/swagger.json' }));
     this._port = Number(process.env.PORT ?? DEFAULT_SERVER_PORT);
     this._diContainer = DiContainer.getInstance();
   }
