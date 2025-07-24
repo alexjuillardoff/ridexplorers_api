@@ -53,3 +53,7 @@ ul#files li {
 ul#files li:hover {
   text-decoration: underline;
 }
+
+.auth-info {
+  margin-top: 0.5rem;
+}

@@ -8,6 +8,17 @@
   "servers": [
     { "url": "/" }
   ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    { "basicAuth": [] }
+  ],
   "paths": {
     "/api/coasters": {
       "get": {
