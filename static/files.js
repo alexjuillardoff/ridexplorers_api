@@ -1,6 +1,46 @@
 const filesList = document.getElementById('files');
 const fileContent = document.getElementById('file-content');
 const fileInput = document.getElementById('file-upload');
+const loginForm = document.getElementById('login-form');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+
+function authToken() {
+  return localStorage.getItem('authToken') || '';
+}
+
+function authHeader() {
+  const token = authToken();
+  return token ? { Authorization: 'Basic ' + token } : {};
+}
+
+function showLogin() {
+  loginForm.style.display = 'flex';
+  usernameInput.focus();
+}
+
+function hideLogin() {
+  loginForm.style.display = 'none';
+}
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const token = btoa(`${usernameInput.value}:${passwordInput.value}`);
+  localStorage.setItem('authToken', token);
+  hideLogin();
+  loadFiles();
+});
+
+function authFetch(url, options = {}) {
+  options.headers = { ...(options.headers || {}), ...authHeader() };
+  return fetch(url, options).then((r) => {
+    if (r.status === 401) {
+      showLogin();
+      throw new Error('Unauthorized');
+    }
+    return r;
+  });
+}
 
 function uploadFile(file) {
   const data = new FormData();
@@ -33,6 +73,10 @@ function uploadFile(file) {
     toast.update({ toastMsg: `Error uploading ${file.name}`, type: 'error', autoCloseTime: 3000, canClose: true });
   });
   xhr.open('POST', '/scrape/upload');
+  const token = authToken();
+  if (token) {
+    xhr.setRequestHeader('Authorization', 'Basic ' + token);
+  }
   xhr.send(data);
 }
 
@@ -43,7 +87,7 @@ fileInput.addEventListener('change', (e) => {
 });
 
 function loadFiles() {
-  fetch('/scrape/files')
+  authFetch('/scrape/files')
     .then(r => r.json())
     .then(files => {
       filesList.innerHTML = '';
@@ -59,15 +103,26 @@ function loadFiles() {
         li.addEventListener('click', () => loadFile(f.name));
         filesList.appendChild(li);
       });
+    })
+    .catch(() => {
+      filesList.innerHTML = '';
+      fileContent.textContent = '';
     });
 }
 
 function loadFile(name) {
-  fetch(`/scrape/files/${name}`)
+  authFetch(`/scrape/files/${name}`)
     .then(r => r.json())
     .then(data => {
       fileContent.textContent = JSON.stringify(data, null, 2);
+    })
+    .catch(() => {
+      fileContent.textContent = '';
     });
 }
 
-loadFiles();
+if (authToken()) {
+  loadFiles();
+} else {
+  showLogin();
+}
