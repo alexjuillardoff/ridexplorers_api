@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import Server from '@lib/core';
-import dotenv from 'dotenv';
 
 import {
   RollerCoastersController,
@@ -13,8 +13,6 @@ class Application {
   _appServer: Server;
 
   constructor() {
-    dotenv.config();
-
     this._appServer = new Server();
     this._appServer.setControllers([
       IndexController,
