@@ -26,7 +26,8 @@ Ce projet nécessite **Node.js 18** ou plus récent.
 
 ### Variables d'environnement
 
-Le serveur lit plusieurs variables facultatives dans un fichier `.env` :
+Le serveur lit plusieurs variables facultatives dans un fichier `.env`. Ces
+variables sont chargées automatiquement au démarrage grâce à `dotenv` :
 
 - `PORT` – port sur lequel l'API sera accessible (défaut : `8000`).
 - `RCDB_URL` – URL de base utilisée pour le scraping de RCDB.
