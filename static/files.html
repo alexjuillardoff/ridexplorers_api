@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestion des fichiers</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/typescript-toastify@1.0.4/lib/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Gestion des fichiers</h1>
+      <nav>
+        <a href="/">Accueil</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h2>Data Files</h2>
+        <input type="file" id="file-upload" accept="application/json" multiple />
+        <ul id="files"></ul>
+        <pre id="file-content"></pre>
+      </section>
+    </main>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module">
+    import Toast from 'https://unpkg.com/typescript-toastify@1.0.4/lib/index.js';
+    window.Toast = Toast;
+  </script>
+  <script src="files.js"></script>
+</body>
+</html>

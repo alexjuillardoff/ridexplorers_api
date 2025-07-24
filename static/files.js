@@ -1,20 +1,6 @@
-const socket = io();
-const terminal = document.getElementById('terminal');
 const filesList = document.getElementById('files');
 const fileContent = document.getElementById('file-content');
 const fileInput = document.getElementById('file-upload');
-
-function appendLog(msg) {
-  terminal.textContent += msg;
-  terminal.scrollTop = terminal.scrollHeight;
-}
-
-socket.on('log', appendLog);
-socket.on('error', appendLog);
-socket.on('done', msg => {
-  appendLog(msg);
-  loadFiles();
-});
 
 function uploadFile(file) {
   const data = new FormData();
@@ -84,14 +70,4 @@ function loadFile(name) {
     });
 }
 
-function loadLogs() {
-  fetch('/scrape/logs')
-    .then(r => r.json())
-    .then(logs => {
-      terminal.textContent = '';
-      logs.forEach(appendLog);
-    });
-}
-
 loadFiles();
-loadLogs();
