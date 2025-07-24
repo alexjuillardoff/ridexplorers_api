@@ -72,6 +72,8 @@ Les tâches de scraping peuvent également être contrôlées à l'exécution gr
 | `GET`     | `/scrape/files`            | Liste les fichiers JSON extraits disponibles. |
 | `GET`     | `/scrape/files/:name`      | Récupère le contenu d'un fichier de scraping. |
 | `POST`    | `/scrape/upload`           | Téléverse un fichier JSON sur le serveur. |
+| `POST`    | `/login`                   | Stocke les identifiants dans un cookie. |
+| `POST`    | `/logout`                  | Supprime le cookie d'authentification. |
 
 ## Fichiers de données
 - `src/db/coasters.json` – toutes les montagnes russes scrappées avec leurs images mappées.
