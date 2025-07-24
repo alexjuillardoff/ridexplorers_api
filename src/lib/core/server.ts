@@ -9,7 +9,8 @@ import { Server as SocketServer } from 'socket.io';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../../swagger.json';
-import { authMiddleware } from '@lib/middleware/auth';
+import { authMiddleware, authCookie } from '@lib/middleware/auth';
+import cookieParser from 'cookie-parser';
 
 export let io: SocketServer;
 
@@ -33,6 +34,8 @@ export default class Server {
     this._app.use(express.json());
     this._app.use(express.static('static'));
     this._app.use(cors());
+    this._app.use(cookieParser());
+    this._app.use(authCookie);
     this._app.get('/swagger.json', (_req, res) => res.json(swaggerDocument));
     this._app.use('/docs', swaggerUi.serve, swaggerUi.setup(undefined, { swaggerUrl: '/swagger.json' }));
     this._app.use(authMiddleware);
