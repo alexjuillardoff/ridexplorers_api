@@ -5,7 +5,7 @@ RIDEXPLORERS API fournit une API REST simple contenant des données récupérée
 ## Fonctionnalités
 
 - Interrogation des montagnes russes et des parcs d'attractions via des routes REST.
-- Recherche par nom ou par parc.
+- Recherche de montagnes russes ou de parcs par nom.
 - Sélection aléatoire de montagnes russes préalablement scrappées.
 - Lancement et suivi des scripts de scraping depuis l'API ou l'interface web.
 - Téléversement et lecture de fichiers JSON de données.
@@ -75,6 +75,7 @@ Les tâches de scraping peuvent également être contrôlées à l'exécution gr
 | `GET`     | `/api/coasters/search?q=`  | Retourne les montagnes russes dont le nom ou le parc correspond à `q`. |
 | `GET`     | `/api/theme-parks`         | Retourne une liste paginée de parcs d'attractions. Utilisez `offset` et `limit`. |
 | `GET`     | `/api/theme-parks/:id`     | Retourne un parc par id. Renvoie `400` si non trouvé. |
+| `GET`     | `/api/theme-parks/search?q=` | Retourne les parcs dont le nom correspond à `q`. |
 | `GET`     | `/scrape/start`            | Lance un script de scraping spécifié via le paramètre `script`. |
 | `POST`    | `/scrape/cancel`           | Annule la tâche de scraping en cours. |
 | `GET`     | `/scrape/tasks`            | Liste toutes les tâches de scraping avec leur statut. |

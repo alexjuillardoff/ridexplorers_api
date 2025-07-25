@@ -68,6 +68,13 @@
         "responses": {"200": {"description": "Theme park"}, "400": {"description": "Not found"}}
       }
     },
+    "/api/theme-parks/search": {
+      "get": {
+        "summary": "Search theme parks",
+        "parameters": [{"name": "q", "in": "query", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Search result"}}
+      }
+    },
     "/scrape/start": {
       "get": {
         "summary": "Start scraping script",
