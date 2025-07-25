@@ -5,7 +5,6 @@ import {
   RollerCoastersController,
   IndexController,
   ThemeParksController,
-  RandomCoastersController,
   ScrapeController,
   CookieController,
 } from '@app/controllers';
@@ -19,7 +18,6 @@ class Application {
       IndexController,
       RollerCoastersController,
       ThemeParksController,
-      RandomCoastersController,
       ScrapeController,
       CookieController,
     ]);

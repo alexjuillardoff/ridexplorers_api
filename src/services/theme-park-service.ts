@@ -43,4 +43,14 @@ export default class ThemeParkService {
       name?.toLowerCase()?.includes(searchTerm.toLowerCase())
     );
   }
+
+  public async getThemeParksByRegion(region: string): Promise<ThemePark[]> {
+    const themeParks = await this._getThemeParksDb();
+    return themeParks.filter(
+      ({ country, state, city }: ThemePark) =>
+        country?.toLowerCase().includes(region.toLowerCase()) ||
+        state?.toLowerCase().includes(region.toLowerCase()) ||
+        city?.toLowerCase().includes(region.toLowerCase())
+    );
+  }
 }

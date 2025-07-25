@@ -10,20 +10,6 @@ import { ScrapeService } from '@app/services';
 export default class ScrapeController {
   @Inject() private _scrapeService: ScrapeService;
 
-  @Get('/start')
-  public async start(req: Request, res: Response) {
-    const { script } = req.query;
-    if (typeof script !== 'string') {
-      res.status(400).json({ message: 'Missing script' });
-      return;
-    }
-    try {
-      const task = await this._scrapeService.start(script);
-      res.json({ message: 'Scraping started', taskId: task.id });
-    } catch (e: any) {
-      res.status(400).json({ message: e.message });
-    }
-  }
 
   @Get('/files')
   public async files(_: Request, res: Response) {
@@ -41,24 +27,6 @@ export default class ScrapeController {
     }
   }
 
-  @Post('/cancel')
-  public async cancel(_: Request, res: Response) {
-    this._scrapeService.cancel();
-    res.json({ message: 'Scraping cancelled' });
-  }
-
-  @Get('/tasks')
-  public async tasks(_: Request, res: Response) {
-    res.json(this._scrapeService.getTasks());
-  }
-
-  @Get('/logs')
-  public async logs(req: Request, res: Response) {
-    const { id } = req.query;
-    const taskId = typeof id === 'string' ? Number(id) : undefined;
-    const logs = this._scrapeService.getLogs(taskId);
-    res.json(logs);
-  }
 
   @Post('/upload')
   public async upload(req: Request, res: Response) {
