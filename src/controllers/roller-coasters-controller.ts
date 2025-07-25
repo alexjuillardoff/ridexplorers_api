@@ -45,6 +45,19 @@ export default class RollerCoastersController {
     res.status(200).json({ coasters: matchedCoasters, totalMatch: matchedCoasters.length });
   }
 
+  @Get('/region/:region')
+  public async coastersByRegion(req: Request, res: Response) {
+    const { region } = req.params;
+    const coasters = await this._rollercoasterService.getCoastersByRegion(region);
+    res.status(200).json(coasters);
+  }
+
+  @Get('/filter')
+  public async filterCoasters(req: Request, res: Response) {
+    const coasters = await this._rollercoasterService.filterCoasters(req.query as any);
+    res.status(200).json(coasters);
+  }
+
   @Get('/random')
   public async randomCoasterRoute(_: Request, res: Response) {
     try {

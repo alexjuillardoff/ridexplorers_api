@@ -39,9 +39,6 @@
         "responses": {"200": {"description": "Coaster"}, "404": {"description": "Not found"}}
       }
     },
-    "/api/random-coasters": {
-      "get": {"summary": "Random coasters list", "responses": {"200": {"description": "List of random coasters"}}}
-    },
     "/api/coasters/random": {
       "get": {"summary": "Random coaster", "responses": {"200": {"description": "One random coaster"}}}
     },
@@ -50,6 +47,28 @@
         "summary": "Search coasters",
         "parameters": [{"name": "q", "in": "query", "required": true, "schema": {"type": "string"}}],
         "responses": {"200": {"description": "Search result"}}
+      }
+    },
+    "/api/coasters/region/{region}": {
+      "get": {
+        "summary": "Coasters by region",
+        "parameters": [{"name": "region", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Region result"}}
+      }
+    },
+    "/api/coasters/filter": {
+      "get": {
+        "summary": "Filter coasters",
+        "parameters": [
+          {"name": "make", "in": "query", "schema": {"type": "string"}},
+          {"name": "model", "in": "query", "schema": {"type": "string"}},
+          {"name": "type", "in": "query", "schema": {"type": "string"}},
+          {"name": "design", "in": "query", "schema": {"type": "string"}},
+          {"name": "inversions", "in": "query", "schema": {"type": "string"}},
+          {"name": "elements", "in": "query", "schema": {"type": "string"}},
+          {"name": "height", "in": "query", "schema": {"type": "string"}}
+        ],
+        "responses": {"200": {"description": "Filtered coasters"}}
       }
     },
     "/api/theme-parks": {
@@ -78,17 +97,11 @@
         "responses": {"200": {"description": "Search result"}}
       }
     },
-    "/scrape/start": {
+    "/api/theme-parks/region/{region}": {
       "get": {
-        "summary": "Start scraping script",
-        "parameters": [{"name": "script", "in": "query", "required": true, "schema": {"type": "string"}}],
-        "responses": {"200": {"description": "Scraping started"}, "400": {"description": "Error"}}
-      }
-    },
-    "/scrape/cancel": {
-      "post": {
-        "summary": "Cancel scraping task",
-        "responses": {"200": {"description": "Scraping cancelled"}}
+        "summary": "Theme parks by region",
+        "parameters": [{"name": "region", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Region result"}}
       }
     },
     "/scrape/files": {
@@ -119,15 +132,5 @@
         "responses": {"200": {"description": "File uploaded"}, "400": {"description": "Error"}}
       }
     },
-    "/scrape/tasks": {
-      "get": {"summary": "List scraping tasks", "responses": {"200": {"description": "Tasks"}}}
-    },
-    "/scrape/logs": {
-      "get": {
-        "summary": "Retrieve scraping logs",
-        "parameters": [{"name": "id", "in": "query", "schema": {"type": "integer"}}],
-        "responses": {"200": {"description": "Logs"}}
-      }
-    }
   }
 }

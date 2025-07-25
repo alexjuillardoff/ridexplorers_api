@@ -46,4 +46,11 @@ export default class ThemeParksController {
 
     res.status(200).json({ themeParks: matchedParks, totalMatch: matchedParks.length });
   }
+
+  @Get('/region/:region')
+  public async parksByRegion(req: Request, res: Response): Promise<void> {
+    const { region } = req.params;
+    const parks = await this._themeParkService.getThemeParksByRegion(region);
+    res.status(200).json(parks);
+  }
 }

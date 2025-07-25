@@ -46,6 +46,40 @@ export default class RollerCoasterService {
     );
   }
 
+  public async getCoastersByRegion(region: string): Promise<RollerCoaster[]> {
+    const coasters = await this._getCoastersDB();
+    return coasters.filter((c) => c.region?.toLowerCase() === region.toLowerCase());
+  }
+
+  public async filterCoasters(filters: {
+    make?: string;
+    model?: string;
+    type?: string;
+    design?: string;
+    inversions?: string;
+    elements?: string;
+    height?: string;
+  }): Promise<RollerCoaster[]> {
+    const coasters = await this._getCoastersDB();
+    return coasters.filter((c) => {
+      if (filters.make && !c.make?.toLowerCase().includes(filters.make.toLowerCase())) return false;
+      if (filters.model && !c.model?.toLowerCase().includes(filters.model.toLowerCase())) return false;
+      if (filters.type && !c.type?.toLowerCase().includes(filters.type.toLowerCase())) return false;
+      if (filters.design && !c.design?.toLowerCase().includes(filters.design.toLowerCase())) return false;
+      if (filters.inversions && !c.stats?.inversions?.toString().toLowerCase().includes(filters.inversions.toLowerCase())) return false;
+      if (filters.elements) {
+        const elems = Array.isArray(c.stats?.elements)
+          ? (c.stats?.elements as string[])
+          : c.stats?.elements
+          ? [c.stats.elements as string]
+          : [];
+        if (!elems.some((e) => e.toLowerCase().includes(filters.elements!.toLowerCase()))) return false;
+      }
+      if (filters.height && !c.stats?.height?.toLowerCase().includes(filters.height.toLowerCase())) return false;
+      return true;
+    });
+  }
+
   /**
    * Retrieve a single random coaster from the database.
    */
