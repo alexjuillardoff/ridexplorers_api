@@ -7,6 +7,7 @@ export default class IndexController {
     { endpoint: '/api/coasters?offset=0&limit=20', description: 'Returns all coasters information' },
     { endpoint: '/api/coasters/:id', description: 'Returns coaster with matched id' },
     { endpoint: '/api/random-coasters', description: 'Returns random scraped coasters' },
+    { endpoint: '/api/coasters/random', description: 'Returns one random coaster' },
     { endpoint: '/api/coasters/search?q=Steel', description: 'Returns matched coaster' },
     { endpoint: '/api/theme-parks/search?q=Magic', description: 'Returns matched theme park' },
   ];
