@@ -32,4 +32,18 @@ export default class ThemeParksController {
       res.status(400).json({ message: `Theme Park ${id} not found` });
     }
   }
+
+  @Get('/search')
+  public async searchThemeParkRoute(req: Request, res: Response): Promise<void> {
+    const { q = '' } = req.query;
+
+    if (!q) {
+      res.status(400).json([]);
+      return;
+    }
+
+    const matchedParks: ThemePark[] = await this._themeParkService.searchThemeParks(q as string);
+
+    res.status(200).json({ themeParks: matchedParks, totalMatch: matchedParks.length });
+  }
 }

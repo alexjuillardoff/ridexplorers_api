@@ -32,4 +32,15 @@ export default class ThemeParkService {
     // Return the park with the matching id if it exists
     return themeParks.find(({ id }: ThemePark) => id === themeParkId);
   }
+
+  /**
+   * Search a theme park by name.
+   */
+  public async searchThemeParks(searchTerm: string): Promise<ThemePark[]> {
+    const themeParks: ThemePark[] = await this._getThemeParksDb();
+
+    return themeParks.filter(({ name }: ThemePark) =>
+      name?.toLowerCase()?.includes(searchTerm.toLowerCase())
+    );
+  }
 }
