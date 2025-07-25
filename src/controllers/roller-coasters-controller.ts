@@ -44,4 +44,14 @@ export default class RollerCoastersController {
 
     res.status(200).json({ coasters: matchedCoasters, totalMatch: matchedCoasters.length });
   }
+
+  @Get('/random')
+  public async randomCoasterRoute(_: Request, res: Response) {
+    try {
+      const coaster = await this._rollercoasterService.getRandomCoaster();
+      res.status(200).json(coaster);
+    } catch (e: any) {
+      res.status(400).json({ message: 'Error retrieving random coaster', cause: e });
+    }
+  }
 }

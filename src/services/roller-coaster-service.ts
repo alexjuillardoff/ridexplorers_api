@@ -2,6 +2,7 @@ import { __COASTERS_DB_FILENAME__ } from '@app/constants';
 import JsonDB from '@app/db';
 import { PaginatedResponse } from '@app/models';
 import type { RollerCoaster } from '@app/types';
+import { getRandom } from '@app/utils';
 import { Service } from '@lib/decorators';
 
 @Service()
@@ -43,5 +44,16 @@ export default class RollerCoasterService {
         park.name?.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
         name?.toLowerCase()?.includes(searchTerm?.toLowerCase().toLowerCase())
     );
+  }
+
+  /**
+   * Retrieve a single random coaster from the database.
+   */
+  public async getRandomCoaster(): Promise<RollerCoaster | undefined> {
+    const coasters: RollerCoaster[] = await this._getCoastersDB();
+    if (coasters.length === 0) return undefined;
+
+    const index = getRandom(0, coasters.length);
+    return coasters[index];
   }
 }
