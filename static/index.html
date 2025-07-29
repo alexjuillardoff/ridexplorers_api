@@ -5,24 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RIDEXPLORERS API</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/react-toastify/dist/ReactToastify.min.css" />
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>RIDEXPLORERS API</h1>
-      <nav>
-        <a href="/docs" target="_blank">Swagger Docs</a>
-        <a href="files.html">Gestion des fichiers</a>
-      </nav>
-      <p class="auth-info">
-        Utilisez l'authentification Basic pour tester l'API. Les identifiants sont définis par
-        <code>AUTH_USER</code> et <code>AUTH_PASSWORD</code>.
-      </p>
-    </header>
-    <main>
-      <p>Bienvenue sur l'API RIDEXPLORERS. Consultez la documentation pour découvrir toutes les routes disponibles.</p>
-    </main>
-  </div>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script>window.react = React;</script>
+  <script src="https://cdn.jsdelivr.net/npm/react-toastify/dist/react-toastify.umd.min.js"></script>
+  <script type="text/babel" src="files.jsx"></script>
   <div id="cookie-banner" class="cookie-banner">
     Ce site utilise des cookies techniques uniquement. <button id="accept-cookies">OK</button>
   </div>

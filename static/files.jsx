@@ -118,6 +118,7 @@ function App() {
       <nav className="navbar">
         <span className="api-name">RIDEXPLORERS API</span>
         <div className="navbar-right">
+          <a href="/docs" target="_blank">Swagger Docs</a>
           <a href="/">Accueil</a>
           <span className="auth-status">{token ? 'Connect\u00e9' : 'Non connect\u00e9'}</span>
           {!token ? (
@@ -133,6 +134,10 @@ function App() {
       </nav>
       <div className="container">
         <h1>Gestion des fichiers</h1>
+        <p className="auth-info">
+          Utilisez l'authentification Basic pour tester l'API. Les identifiants sont
+          définis par <code>AUTH_USER</code> et <code>AUTH_PASSWORD</code>.
+        </p>
         {token && (
           <section>
             <h2>Data Files</h2>
