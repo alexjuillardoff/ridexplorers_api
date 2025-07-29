@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Post } from '@lib/decorators';
+import { Controller, Get, Inject, Post, Delete } from '@lib/decorators';
 import type { Request, Response } from 'express';
 import multer from 'multer';
 import { ScrapeService } from '@app/services';
@@ -22,6 +22,16 @@ export default class ScrapeController {
     try {
       const data = await this._scrapeService.readFile(req.params.name);
       res.json(data);
+    } catch (e) {
+      res.status(404).json({ message: 'File not found' });
+    }
+  }
+
+  @Delete('/files/:name')
+  public async deleteFile(req: Request, res: Response) {
+    try {
+      await this._scrapeService.deleteFile(req.params.name);
+      res.json({ message: 'File deleted' });
     } catch (e) {
       res.status(404).json({ message: 'File not found' });
     }
