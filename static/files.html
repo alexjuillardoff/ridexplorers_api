@@ -5,41 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestion des fichiers</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/typescript-toastify@1.0.4/lib/style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/react-toastify/dist/ReactToastify.min.css" />
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Gestion des fichiers</h1>
-      <nav>
-        <a href="/">Accueil</a>
-      </nav>
-    </header>
-    <main>
-      <form id="login-form">
-        <input id="username" placeholder="Username" />
-        <input id="password" type="password" placeholder="Password" />
-        <button type="submit">Login</button>
-      </form>
-      <button id="logout-button">Logout</button>
-      <section>
-        <h2>Data Files</h2>
-        <input type="file" id="file-upload" accept="application/json" multiple />
-        <progress id="upload-progress" value="0" max="100" style="display:none; width:100%;"></progress>
-        <ul id="files"></ul>
-        <pre id="file-content"></pre>
-      </section>
-    </main>
-  </div>
-  <script src="/socket.io/socket.io.js"></script>
-  <script type="module">
-    import Toast from 'https://unpkg.com/typescript-toastify@1.0.4/lib/index.js';
-    window.Toast = Toast;
-  </script>
-  <script src="files.js"></script>
-  <div id="cookie-banner" class="cookie-banner">
-    Ce site utilise des cookies techniques uniquement. <button id="accept-cookies">OK</button>
-  </div>
-  <script src="cookies.js"></script>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-toastify/dist/react-toastify.umd.min.js"></script>
+  <script type="text/babel" src="files.jsx"></script>
 </body>
 </html>
