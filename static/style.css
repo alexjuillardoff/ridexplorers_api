@@ -50,11 +50,26 @@ ul#files {
 }
 
 ul#files li {
-  cursor: pointer;
   padding: 0.25rem 0;
 }
 
-ul#files li:hover {
+.file-name {
+  cursor: pointer;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.file-date {
+  font-size: 0.8rem;
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.file-name:hover {
   text-decoration: underline;
 }
 

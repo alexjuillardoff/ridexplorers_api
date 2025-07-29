@@ -40,7 +40,9 @@ function App() {
   const loadFiles = () => {
     fetch('/scrape/files', { headers: authHeader() })
       .then((r) => r.json())
-      .then(setFiles)
+      .then((list) =>
+        setFiles(list.sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified)))
+      )
       .catch(() => {
         setFiles([]);
         setContent('');
@@ -140,10 +142,11 @@ function App() {
             </>
           )}
           <ul id="files">
-            {files.length === 0 && <li>No files uploaded</li>}
+            {files.length === 0 && <li>Aucun fichier disponible</li>}
             {files.map((f) => (
-              <li key={f.name}>
-                <span onClick={() => viewFile(f.name)}>{f.name}</span>
+              <li key={f.name} className="file-item">
+                <span className="file-name" onClick={() => viewFile(f.name)}>{f.name}</span>
+                <span className="file-date">{new Date(f.lastModified).toLocaleString()}</span>
                 <button onClick={() => removeFile(f.name)} style={{ marginLeft: '0.5rem' }}>Delete</button>
               </li>
             ))}
