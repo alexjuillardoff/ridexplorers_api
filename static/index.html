@@ -1,23 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RIDEXPLORERS API</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/react-toastify/dist/ReactToastify.min.css" />
 </head>
 <body>
-  <div id="root"></div>
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script>window.react = React;</script>
-  <script src="https://cdn.jsdelivr.net/npm/react-toastify/dist/react-toastify.umd.min.js"></script>
-  <script type="text/babel" src="files.jsx"></script>
+  <div class="navbar">
+    <span class="api-name">RIDEXPLORERS API</span>
+    <div class="navbar-right">
+      <span class="auth-status" id="auth-status"></span>
+      <form id="login-form">
+        <input id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <button type="submit">Login</button>
+      </form>
+      <button id="logout-button" style="display:none;">Logout</button>
+    </div>
+  </div>
+  <nav class="nav-links">
+    <a href="/">Accueil</a>
+    <a href="/docs" target="_blank">Swagger Docs</a>
+    <a href="/files.html">Gestionnaire de fichiers</a>
+  </nav>
+  <div class="container">
+    <h1>Bienvenue sur RIDEXPLORERS API</h1>
+    <p>Cette API REST fournit des informations sur les montagnes russes et les parcs d'attractions extraites de RCDB.</p>
+    <h2>Démarrage rapide</h2>
+    <ol>
+      <li>Clonez le projet : <code>git clone https://github.com/alexjuillardoff/ridexplorers_api</code></li>
+      <li>Installez les dépendances : <code>npm install</code></li>
+      <li>Compilez le code TypeScript : <code>npm run build</code></li>
+      <li>Lancez l'API en développement : <code>npm run start:dev</code></li>
+    </ol>
+    <p>La documentation interactive Swagger est accessible sur <code>/docs</code> une fois le serveur démarré.</p>
+    <h2>Fonctionnalités principales</h2>
+    <ul>
+      <li>Récupération des montagnes russes et des parcs via des routes REST.</li>
+      <li>Recherche et filtrage par nom ou par région.</li>
+      <li>Lancement des scripts de scraping depuis l'API ou l'interface web.</li>
+      <li>Téléversement de fichiers JSON de données.</li>
+    </ul>
+    <p>Pour un guide pas à pas d'installation et d'utilisation, consultez <code>README.md</code> et <code>GUIDE_DEBUTANT.md</code> dans le dépôt GitHub.</p>
+    <p>Le code source est disponible sur <a href="https://github.com/alexjuillardoff/ridexplorers_api" target="_blank">GitHub</a>.</p>
+  </div>
   <div id="cookie-banner" class="cookie-banner">
     Ce site utilise des cookies techniques uniquement. <button id="accept-cookies">OK</button>
   </div>
+  <script src="login.js"></script>
   <script src="cookies.js"></script>
 </body>
 </html>

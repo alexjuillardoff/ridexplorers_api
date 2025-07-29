@@ -139,6 +139,17 @@ ul#files li {
   text-decoration: underline;
 }
 
+.nav-links {
+  display: flex;
+  align-items: center;
+  background: #f6f8fa;
+  padding: 0.5rem 1rem;
+}
+
+.nav-links a {
+  margin-right: 1rem;
+}
+
 .navbar-right {
   display: flex;
   align-items: center;

@@ -115,11 +115,9 @@ function App() {
 
   return (
     <>
-      <nav className="navbar">
+      <div className="navbar">
         <span className="api-name">RIDEXPLORERS API</span>
         <div className="navbar-right">
-          <a href="/docs" target="_blank">Swagger Docs</a>
-          <a href="/">Accueil</a>
           <span className="auth-status">{token ? 'Connect\u00e9' : 'Non connect\u00e9'}</span>
           {!token ? (
             <form onSubmit={login} id="login-form">
@@ -131,6 +129,11 @@ function App() {
             <button id="logout-button" onClick={logout}>Logout</button>
           )}
         </div>
+      </div>
+      <nav className="nav-links">
+        <a href="/">Accueil</a>
+        <a href="/docs" target="_blank">Swagger Docs</a>
+        <a href="/files.html">Gestionnaire de fichiers</a>
       </nav>
       <div className="container">
         <h1>Gestion des fichiers</h1>
