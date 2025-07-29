@@ -49,6 +49,7 @@ variables sont chargées automatiquement au démarrage grâce à `dotenv` :
 L'API fonctionne avec des fichiers JSON situés dans `src/db/`. Ces fichiers sont générés en scrappant RCDB. Plusieurs scripts npm sont fournis :
 
 - `npm run scrape` – scrappe les données de montagnes russes sur une plage d'identifiants ou de pages et stocke le résultat dans `src/db/coasters.json`. Les images sont transformées en URL absolue grâce à `scrape:map-coaster-photos`.
+- `npm run scrape -- --region World` – récupère automatiquement toutes les montagnes russes disponibles sur RCDB.
 - `npm run scrape:theme-parks` – récupère les informations des parcs et les sauvegarde dans `src/db/theme-parks.json`.
 - `npm run scrape:map-coaster-photos` – associe les URL d'images des montagnes russes déjà récupérées avec l'URL de base configurée.
 
