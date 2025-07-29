@@ -31,7 +31,9 @@ export default class Server {
 
   constructor() {
     this._app = express();
-    this._app.use(express.json());
+    // Permet de parser de gros payloads JSON jusqu'à 1 Go pour les téléversements
+    // manuels de fichiers. Les requêtes classiques restent inchangées.
+    this._app.use(express.json({ limit: '1gb' }));
     // Activation du parseur de cookies pour lire les préférences utilisateurs
     this._app.use(cookieParser());
     this._app.use(express.static('static'));
