@@ -1,6 +1,7 @@
 const filesList = document.getElementById('files');
 const fileContent = document.getElementById('file-content');
 const fileInput = document.getElementById('file-upload');
+const progressBar = document.getElementById('upload-progress');
 const loginForm = document.getElementById('login-form');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
@@ -74,11 +75,14 @@ function uploadFile(file) {
     type: 'info',
     theme: 'dark',
   });
+  progressBar.style.display = 'block';
+  progressBar.value = 0;
   const xhr = new XMLHttpRequest();
   xhr.upload.addEventListener('progress', (e) => {
     if (e.lengthComputable) {
       const percent = Math.round((e.loaded / e.total) * 100);
       toast.update({ toastMsg: `Uploading ${file.name}... ${percent}%` });
+      progressBar.value = percent;
     }
   });
   xhr.addEventListener('load', () => {
@@ -88,9 +92,11 @@ function uploadFile(file) {
     } else {
       toast.update({ toastMsg: `Error uploading ${file.name}`, type: 'error', autoCloseTime: 3000, canClose: true });
     }
+    progressBar.style.display = 'none';
   });
   xhr.addEventListener('error', () => {
     toast.update({ toastMsg: `Error uploading ${file.name}`, type: 'error', autoCloseTime: 3000, canClose: true });
+    progressBar.style.display = 'none';
   });
   xhr.open('POST', '/scrape/upload');
   const token = authToken();
