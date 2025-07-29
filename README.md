@@ -59,7 +59,7 @@ Les tâches de scraping peuvent également être contrôlées via quelques route
 
 - `GET /scrape/files` – liste les fichiers JSON extraits disponibles.
 - `GET /scrape/files/:name` – récupère le contenu d'un fichier de scraping.
-- `POST /scrape/upload` – charge manuellement un fichier JSON dans `src/db/`.
+- `POST /scrape/upload` – charge manuellement un fichier JSON dans `src/db/` (jusqu'à 1 Go).
 
 > **Remarque** : l'URL de base RCDB est `https://rcdb.com` par défaut. Vous pouvez la modifier via la variable `RCDB_URL`.
 
@@ -80,7 +80,7 @@ Les tâches de scraping peuvent également être contrôlées via quelques route
 | `GET`     | `/api/theme-parks/region/{region}` | Retourne les parcs situés dans la région donnée. |
 | `GET`     | `/scrape/files`            | Liste les fichiers JSON extraits disponibles. |
 | `GET`     | `/scrape/files/:name`      | Récupère le contenu d'un fichier de scraping. |
-| `POST`    | `/scrape/upload`           | Téléverse un fichier JSON sur le serveur. |
+| `POST`    | `/scrape/upload`           | Téléverse un fichier JSON (<= 1&nbsp;Go) sur le serveur. |
 
 ## Fichiers de données
 - `src/db/coasters.json` – toutes les montagnes russes scrappées avec leurs images mappées.
