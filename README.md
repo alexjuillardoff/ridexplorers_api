@@ -48,9 +48,12 @@ variables sont chargées automatiquement au démarrage grâce à `dotenv` :
 ### Scraping des données
 L'API fonctionne avec des fichiers JSON situés dans `src/db/`. Ces fichiers sont générés en scrappant RCDB. Plusieurs scripts npm sont fournis :
 
-- `npm run scrape` – scrappe les données de montagnes russes sur une plage d'identifiants ou de pages et stocke le résultat dans `src/db/coasters.json`. Les images sont transformées en URL absolue grâce à `scrape:map-coaster-photos`.
+- `npm run scrape` – récupère les montagnes russes depuis RCDB. Les options `--startId`/`--endId` ou `--startPage`/`--endPage` permettent de définir la plage à explorer. Les données brutes sont enregistrées dans `src/db/coasters-raw.json` puis, si `--saveData` vaut `true`, dans `src/db/coasters.json`.
 - `npm run scrape:theme-parks` – récupère les informations des parcs et les sauvegarde dans `src/db/theme-parks.json`.
 - `npm run scrape:map-coaster-photos` – associe les URL d'images des montagnes russes déjà récupérées avec l'URL de base configurée.
+- `npm run scrape:random` – récupère un échantillon aléatoire de montagnes russes et le stocke dans `src/db/random-coasters.json`.
+Ces scripts lancent un scrappeur interne qui télécharge les pages RCDB via `axios`, extrait les données avec `cheerio` et écrit les fichiers JSON dans `src/db/`.
+Ils peuvent aussi être déclenchés via l'interface web qui communique avec un service démarrant les scripts npm et diffusant les logs en temps réel.
 
 Les tâches de scraping peuvent également être contrôlées via quelques routes HTTP :
 
@@ -83,5 +86,6 @@ Les tâches de scraping peuvent également être contrôlées via quelques route
 - `src/db/coasters.json` – toutes les montagnes russes scrappées avec leurs images mappées.
 - `src/db/coasters-raw.json` – données brutes avant le mapping des images.
 - `src/db/theme-parks.json` – données extraites des parcs d'attractions.
+- `src/db/random-coasters.json` – échantillon aléatoire obtenu via `scrape:random`.
 
 Bonne visite !
