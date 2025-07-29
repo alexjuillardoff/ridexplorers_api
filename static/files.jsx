@@ -1,5 +1,5 @@
 const { useState, useEffect } = React;
-const { ToastContainer, toast } = ReactToastify;
+const { ToastContainer, toast } = reactToastify;
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('authToken') || '');
