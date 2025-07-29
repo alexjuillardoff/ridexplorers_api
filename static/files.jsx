@@ -114,48 +114,51 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <header>
-        <h1>Gestion des fichiers</h1>
-        <nav>
+    <>
+      <nav className="navbar">
+        <span className="api-name">RIDEXPLORERS API</span>
+        <div className="navbar-right">
           <a href="/">Accueil</a>
-        </nav>
-        <p className="auth-status">{token ? 'Connect\u00e9' : 'Non connect\u00e9'}</p>
-      </header>
-      {!token ? (
-        <form onSubmit={login} id="login-form">
-          <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-          <button type="submit">Login</button>
-        </form>
-      ) : (
-        <button id="logout-button" onClick={logout}>Logout</button>
-      )}
-      {token && (
-        <section>
-          <h2>Data Files</h2>
-          <input type="file" accept="application/json" onChange={onFileChange} />
-          {progress && (
-            <>
-              <progress value={progress.percent} max="100" style={{ width: '100%' }}></progress>
-              <div>{progress.percent}% - reste {progress.remaining.toFixed(1)} s</div>
-            </>
+          <span className="auth-status">{token ? 'Connect\u00e9' : 'Non connect\u00e9'}</span>
+          {!token ? (
+            <form onSubmit={login} id="login-form">
+              <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+              <button type="submit">Login</button>
+            </form>
+          ) : (
+            <button id="logout-button" onClick={logout}>Logout</button>
           )}
-          <ul id="files">
-            {files.length === 0 && <li>Aucun fichier disponible</li>}
-            {files.map((f) => (
-              <li key={f.name} className="file-item">
-                <span className="file-name" onClick={() => viewFile(f.name)}>{f.name}</span>
-                <span className="file-date">{new Date(f.lastModified).toLocaleString()}</span>
-                <button onClick={() => removeFile(f.name)} style={{ marginLeft: '0.5rem' }}>Delete</button>
-              </li>
-            ))}
-          </ul>
-          <pre id="file-content">{content}</pre>
-        </section>
-      )}
-      <ToastContainer position="top-right" autoClose={3000} theme="dark" />
-    </div>
+        </div>
+      </nav>
+      <div className="container">
+        <h1>Gestion des fichiers</h1>
+        {token && (
+          <section>
+            <h2>Data Files</h2>
+            <input type="file" accept="application/json" onChange={onFileChange} />
+            {progress && (
+              <>
+                <progress value={progress.percent} max="100" style={{ width: '100%' }}></progress>
+                <div>{progress.percent}% - reste {progress.remaining.toFixed(1)} s</div>
+              </>
+            )}
+            <ul id="files">
+              {files.length === 0 && <li>Aucun fichier disponible</li>}
+              {files.map((f) => (
+                <li key={f.name} className="file-item">
+                  <span className="file-name" onClick={() => viewFile(f.name)}>{f.name}</span>
+                  <span className="file-date">{new Date(f.lastModified).toLocaleString()}</span>
+                  <button onClick={() => removeFile(f.name)} style={{ marginLeft: '0.5rem' }}>Delete</button>
+                </li>
+              ))}
+            </ul>
+            <pre id="file-content">{content}</pre>
+          </section>
+        )}
+        <ToastContainer position="top-right" autoClose={3000} theme="dark" />
+      </div>
+    </>
   );
 }
 

@@ -118,3 +118,49 @@ ul#files li {
   margin-left: 1rem;
   padding: 0.25rem 0.5rem;
 }
+
+/* New navbar styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0366d6;
+  color: #fff;
+  padding: 0.5rem 1rem;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 0.5rem;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.api-name {
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+#login-form {
+  display: flex;
+  margin-bottom: 0;
+  gap: 0.25rem;
+}
+
+#logout-button {
+  margin-bottom: 0;
+}
+
+.auth-status {
+  margin-bottom: 0;
+  font-weight: bold;
+}
