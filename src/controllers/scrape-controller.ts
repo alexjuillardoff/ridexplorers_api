@@ -40,7 +40,14 @@ export default class ScrapeController {
 
   @Post('/upload')
   public async upload(req: Request, res: Response) {
-    const upload = multer().single('file');
+    const upload = multer({
+      storage: multer.diskStorage({
+        destination: 'uploads/',
+        filename: (_req, file, cb) => cb(null, file.originalname),
+      }),
+      limits: { fileSize: 1024 * 1024 * 1024 },
+    }).single('file');
+
     upload(req, res, async (err: any) => {
       if (err) {
         res.status(400).json({ message: err.message });
@@ -51,7 +58,7 @@ export default class ScrapeController {
         return;
       }
       try {
-        await this._scrapeService.saveFile(req.file.originalname, req.file.buffer);
+        await this._scrapeService.saveFileFromPath(req.file.originalname, req.file.path);
         res.json({ message: 'File uploaded' });
       } catch (e: any) {
         res.status(500).json({ message: e.message });
