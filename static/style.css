@@ -63,7 +63,7 @@ ul#files li:hover {
 }
 
 #login-form {
-  display: none;
+  display: flex;
   margin-bottom: 1rem;
   gap: 0.5rem;
 }
@@ -77,9 +77,14 @@ ul#files li:hover {
 }
 
 #logout-button {
-  display: none;
+  display: inline-block;
   margin-bottom: 1rem;
   padding: 0.25rem 0.5rem;
+}
+
+.auth-status {
+  margin-bottom: 1rem;
+  font-weight: bold;
 }
 
 .cookie-banner {

@@ -118,6 +118,7 @@ function App() {
         <nav>
           <a href="/">Accueil</a>
         </nav>
+        <p className="auth-status">{token ? 'Connect\u00e9' : 'Non connect\u00e9'}</p>
       </header>
       {!token ? (
         <form onSubmit={login} id="login-form">
