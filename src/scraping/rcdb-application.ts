@@ -115,7 +115,7 @@ export default class RcdbScraper extends PaginatedScraper {
     };
   }
 
-  private async _getCoasterDetails(link: string): Promise<RollerCoaster> {
+  private async _getCoasterDetails(link: string): Promise<RollerCoaster | null> {
     try {
       const coasterDetailResponse = await axiosInstance.get(link);
       const $: CheerioAPI = load(coasterDetailResponse.data);
@@ -169,6 +169,13 @@ export default class RcdbScraper extends PaginatedScraper {
         },
       };
     } catch (error: any) {
+      const status = error?.response?.status;
+
+      if (status === 400 || status === 404) {
+        console.log(`Skipping coaster ${getNumberOnly(link)} due to HTTP ${status}`);
+        return null;
+      }
+
       console.log(`💥 Error getting coaster ${getNumberOnly(link)} info`, error);
 
       return {
@@ -189,9 +196,10 @@ export default class RcdbScraper extends PaginatedScraper {
 
       if (link) {
         this._progressBar.increment();
-        const rollerCoaster: RollerCoaster = await this._getCoasterDetails(link);
-
-        coastersPage = [...coastersPage, rollerCoaster];
+        const rollerCoaster = await this._getCoasterDetails(link);
+        if (rollerCoaster) {
+          coastersPage = [...coastersPage, rollerCoaster];
+        }
       }
     }
 
@@ -212,7 +220,7 @@ export default class RcdbScraper extends PaginatedScraper {
       const coaster = await this._getCoasterDetails(link);
       this._progressBar.increment();
 
-      if (coaster.name) {
+      if (coaster && coaster.name) {
         this._coasters = [...this._coasters, coaster];
       }
     }
@@ -241,7 +249,7 @@ export default class RcdbScraper extends PaginatedScraper {
       const coaster = await this._getCoasterDetails(link);
       this._progressBar.increment();
 
-      if (coaster.name) {
+      if (coaster && coaster.name) {
         this._coasters = [...this._coasters, coaster];
       }
     }

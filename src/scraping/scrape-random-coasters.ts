@@ -17,7 +17,7 @@ function getRandomIds(amount: number, min: number, max: number): number[] {
 }
 
 (async () => {
-  const ids: number[] = getRandomIds(20, 1, 23000);
+  const ids: number[] = getRandomIds(20, 1, 30000);
   const db = JsonDB.getInstance();
   const coasters = await rcdbScraper.scrapeCoastersByIds(ids);
 
