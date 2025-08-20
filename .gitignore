@@ -1,6 +1,10 @@
-node_modules/
+# secrets et fichiers locaux
+.env
+# build et deps
 dist/
-
-server.log
-
-uploads/
+node_modules/
+# data JSON locale
+src/db/*
+!src/db/.gitkeep
+# OS
+.DS_Store
