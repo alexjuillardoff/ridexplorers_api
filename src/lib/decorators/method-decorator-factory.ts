@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { MetadataKeys } from '@lib/types';
 import type { Methods, Route } from '@lib/types';
 

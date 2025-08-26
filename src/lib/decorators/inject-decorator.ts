@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 export default function Inject(): PropertyDecorator {
   return function (target, propertyKey) {
     const containerClass = target.constructor;
