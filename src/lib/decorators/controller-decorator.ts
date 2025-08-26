@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { MetadataKeys } from '@lib/types';
 
 export default function Controller(basePath: string = '/'): ClassDecorator {

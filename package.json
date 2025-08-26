@@ -10,7 +10,8 @@
     "scrape": "ts-node -r tsconfig-paths/register ./src/scraping/main.ts && npm run scrape:map-coaster-photos",
     "scrape:theme-parks": "ts-node -r tsconfig-paths/register ./src/scraping/scrape-theme-parks",
     "scrape:map-coaster-photos": "ts-node -r tsconfig-paths/register ./src/scraping/map-coaster-photos.ts",
-    "scrape:random": "ts-node -r tsconfig-paths/register ./src/scraping/scrape-random-coasters.ts"
+    "scrape:random": "ts-node -r tsconfig-paths/register ./src/scraping/scrape-random-coasters.ts",
+    "test": "node --test --require reflect-metadata --require tsconfig-paths/register --require ts-node/register test/blog-service.test.ts"
   },
   "keywords": [],
   "author": "",

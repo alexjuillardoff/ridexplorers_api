@@ -1,4 +1,4 @@
-import { DiContainer } from '@lib/core';
+import DiContainer from '@lib/core/di-container';
 
 export default function Service(): Function {
   return (target: { new (): any }): void => {   
