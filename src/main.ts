@@ -7,6 +7,7 @@ import {
   ThemeParksController,
   ScrapeController,
   CookieController,
+  BlogController,
 } from '@app/controllers';
 
 class Application {
@@ -20,6 +21,7 @@ class Application {
       ThemeParksController,
       ScrapeController,
       CookieController,
+      BlogController,
     ]);
 
   }
