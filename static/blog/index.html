@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blog admin</title>
+</head>
+<body>
+  <h1>Blog configuration</h1>
+  <section>
+    <h2>Create flow</h2>
+    <form id="flow-form">
+      <input name="name" placeholder="flow name" required />
+      <input name="keys" placeholder="keys (comma separated)" />
+      <button type="submit">Create</button>
+    </form>
+  </section>
+  <section>
+    <h2>Add entry</h2>
+    <form id="entry-form">
+      <input name="flow" placeholder="flow" required />
+      <textarea name="payload" placeholder='{"title":".."}' required></textarea>
+      <button type="submit">Add</button>
+    </form>
+  </section>
+  <section>
+    <h2>Upload JSON</h2>
+    <form id="upload-form" enctype="multipart/form-data">
+      <input name="flow" placeholder="flow" required />
+      <input type="file" name="file" accept="application/json" required />
+      <button type="submit">Upload</button>
+    </form>
+  </section>
+<script>
+const flowForm = document.getElementById('flow-form');
+flowForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = flowForm.name.value;
+  const keys = flowForm.keys.value.split(',').map(k => k.trim()).filter(Boolean);
+  await fetch('/api/blog/flows', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, keys }) });
+  alert('flow created');
+});
+
+const entryForm = document.getElementById('entry-form');
+entryForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const flow = entryForm.flow.value;
+  const payload = JSON.parse(entryForm.payload.value);
+  await fetch('/api/blog/' + flow, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  alert('entry added');
+});
+
+const uploadForm = document.getElementById('upload-form');
+uploadForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const flow = uploadForm.flow.value;
+  const fd = new FormData(uploadForm);
+  await fetch('/api/blog/' + flow + '/upload', { method: 'POST', body: fd });
+  alert('uploaded');
+});
+</script>
+</body>
+</html>
