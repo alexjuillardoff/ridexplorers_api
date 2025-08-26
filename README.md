@@ -19,8 +19,7 @@ Ce projet nécessite **Node.js 18** ou plus récent.
 
 ## Prérequis
 
-- Option 1 - Installation locale Node.js: Node 18+ et npm.
-- Option 2 - Installation via Docker: Docker Desktop 4.0+.
+- Node 18+ et npm.
 
 ---
 
@@ -54,88 +53,6 @@ Le serveur lit plusieurs variables facultatives dans un fichier `.env`. Ces vari
 - `AUTH_PASSWORD` - mot de passe associé.
 
 Un fichier `.env.example` est fourni. Dupliquez-le en `.env` et adaptez les valeurs.
-
----
-
-## Installation et exécution via Docker (recommandé)
-
-Le dépôt contient une stack Docker prête à l'emploi:
-
-- `Dockerfile` - build multi-stage Node 20.
-- `docker-compose.yml` - services `api`, `nginx` (reverse proxy) et `scraper` (automatisation).
-- `nginx/nginx.conf` - reverse proxy HTTP vers l'API, avec taille d'upload étendue.
-- `scraper/run.sh` - planificateur de scraping avec délai aléatoire.
-
-### Lancer l'API derrière Nginx
-
-1. Copier la configuration d'environnement
-   ```bash
-   cp .env.example .env
-   ```
-2. Démarrer la stack
-   ```bash
-   docker compose up -d
-   ```
-3. Vérifier
-   - API: `http://localhost/api`
-   - Docs OpenAPI: `http://localhost/docs`
-
-### Scraping manuel dans l'image Docker
-
-Les scripts TypeScript sont compilés en JavaScript dans `dist/`. Exécutez-les depuis le conteneur `api`.
-
-- Coasters par plage d'IDs
-  ```bash
-  docker compose exec api node dist/scraping/main.js --startId 0 --endId 1000 --saveData true
-  ```
-- Mapping des photos
-  ```bash
-  docker compose exec api node dist/scraping/map-coaster-photos.js --startId 0 --endId 1000 --saveData true
-  ```
-- Parcs d'attractions
-  ```bash
-  docker compose exec api node dist/scraping/scrape-theme-parks.js
-  ```
-- Échantillon aléatoire
-  ```bash
-  docker compose exec api node dist/scraping/scrape-random-coasters.js
-  ```
-
-Les fichiers JSON sont persistés dans `src/db/` via un volume Docker.
-
-### Automatisation du scraping (service `scraper`)
-
-Un service `scraper` lance périodiquement des runs avec un délai aléatoire entre 24 h et 48 h pour limiter les blocages.
-
-- Démarrer le planificateur
-  ```bash
-  docker compose up -d scraper
-  docker compose logs -f scraper
-  ```
-- Variables ajustables (dans `docker-compose.yml` ou via `env_file`)
-  - `MAX_ID` - borne max des IDs coasters (défaut: `25000`).
-  - `BATCH` - taille du lot par run (défaut: `1500`).
-  - `WAIT_MIN_HOURS` - attente minimale entre 2 runs (défaut: `24`).
-  - `WAIT_MAX_HOURS` - attente maximale entre 2 runs (défaut: `48`).
-  - `PAUSE_MIN_SEC` - pause minimale entre étapes d'un run (défaut: `10`).
-  - `PAUSE_MAX_SEC` - pause maximale entre étapes d'un run (défaut: `45`).
-  - `RETRIES` - tentatives par étape en cas d'échec (défaut: `3`).
-
-- Test d'un cycle immédiat (one-shot)
-  ```bash
-  docker compose run --rm \
-    -e ONE_SHOT=1 \
-    -e WAIT_MIN_HOURS=0 -e WAIT_MAX_HOURS=0 \
-    -e PAUSE_MIN_SEC=1 -e PAUSE_MAX_SEC=3 \
-    scraper
-  ```
-
-Le script `scraper/run.sh` exécute, dans cet ordre, un lot de coasters, le mapping des photos, et aléatoirement un refresh des parcs et un échantillon aléatoire. Un fichier `.last-scrape` est écrit dans `src/db/` avec l'horodatage du dernier passage.
-
-### Exposition externe
-
-- Redirection de port sur votre routeur vers le port 80 du Mac qui héberge Docker.
-- Pour HTTPS, ajoutez un certificat et la configuration TLS à `nginx/nginx.conf` ou utilisez un conteneur compagnon pour Let's Encrypt.
 
 ---
 
@@ -195,18 +112,13 @@ Ces scripts téléchargent les pages RCDB via `axios`, extraient les données av
 
 ```text
 .
-├── Dockerfile
-├── docker-compose.yml
-├── nginx/
-│   └── nginx.conf
-├── scraper/
-│   └── run.sh
 ├── src/
 │   └── db/
 │       └── .gitkeep
+├── static/
 ├── .env.example
 ├── .gitignore
-├── .dockerignore
+├── package.json
 └── README.md
 ```
 
@@ -215,7 +127,6 @@ Ces scripts téléchargent les pages RCDB via `axios`, extraient les données av
 ## Sécurité et bonnes pratiques
 
 - Activez l'authentification Basic via `AUTH_USER` et `AUTH_PASSWORD` si l'API est exposée.
-- N'exposez que le reverse proxy Nginx. Laissez l'API en réseau interne Docker.
 - Surveillez la taille du dossier `src/db/` et archivez régulièrement si nécessaire.
 - Ne poussez jamais de données réelles ni de secrets. Utilisez `.env.example` pour documenter les variables.
 

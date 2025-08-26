@@ -1,6 +1,0 @@
-.git
-node_modules
-dist
-src/db
-.env
-.DS_Store
