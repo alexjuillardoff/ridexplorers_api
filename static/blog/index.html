@@ -108,6 +108,18 @@ const limit = 10;
 let sortField = '';
 let sortDir = 'asc';
 
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
 const searchInput = document.getElementById('search-input');
 searchInput.addEventListener('input', (e) => {
   q = e.target.value;
@@ -148,18 +160,29 @@ async function loadFlows() {
       });
     }
     items.forEach((flow) => {
+      const url = `/api/blog/${flow.slug}`;
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${flow.name}</td>
         <td>${flow.slug}</td>
         <td>${flow.entriesCount}</td>
         <td>${flow.updatedAt}</td>
-        <td><a href="${flow.jsonUrl}" target="_blank">JSON</a></td>
+        <td><a href="${url}" target="_blank">JSON</a> <button class="copy-btn">Copy</button></td>
         <td>
           <button class="rename-btn">Rename</button>
           <button class="duplicate-btn">Duplicate</button>
           <button class="delete-btn">Delete</button>
         </td>`;
+
+      const copyBtn = tr.querySelector('.copy-btn');
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(url);
+          showToast('URL copied');
+        } catch (err) {
+          alert('Failed to copy');
+        }
+      });
 
       const renameBtn = tr.querySelector('.rename-btn');
       renameBtn.addEventListener('click', async () => {
