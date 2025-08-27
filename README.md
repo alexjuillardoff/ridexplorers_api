@@ -19,7 +19,7 @@ Ce projet nécessite **Node.js 18** ou plus récent.
 
 ## Prérequis
 
-- Node 18+ et npm.
+- Node 18+ et pnpm.
 
 ---
 
@@ -27,20 +27,20 @@ Ce projet nécessite **Node.js 18** ou plus récent.
 
 1. Installer les dépendances
    ```bash
-   npm install
+   pnpm install
    ```
 2. Construire le projet
    ```bash
-   npm run build
+   pnpm run build
    ```
 3. Lancer l'API
    - Développement: recompilation et rechargement automatiques via `nodemon`.
      ```bash
-     npm run start:dev
+     pnpm run start:dev
      ```
    - Production: exécute le JavaScript compilé depuis `dist/`.
      ```bash
-     npm run start:prod
+     pnpm run start:prod
      ```
 
 ### Variables d'environnement
@@ -68,14 +68,14 @@ Cette commande utilise le runner de tests natif de Node pour valider les endpoin
 
 ## Scraping des données (installation locale)
 
-L'API fonctionne avec des fichiers JSON situés dans `src/db/`. Ces fichiers sont générés en scrappant RCDB. Plusieurs scripts npm sont fournis.
+L'API fonctionne avec des fichiers JSON situés dans `src/db/`. Ces fichiers sont générés en scrappant RCDB. Plusieurs scripts pnpm sont fournis.
 
-- `npm run scrape` - récupère les montagnes russes depuis RCDB. Options `--startId`/`--endId` ou `--startPage`/`--endPage`. Les données brutes sont enregistrées dans `src/db/coasters-raw.json` puis, si `--saveData` vaut `true`, dans `src/db/coasters.json`.
-- `npm run scrape:theme-parks` - récupère les informations des parcs et les sauvegarde dans `src/db/theme-parks.json`.
-- `npm run scrape:map-coaster-photos` - associe les URL d'images des montagnes russes déjà récupérées avec l'URL de base configurée.
-- `npm run scrape:random` - récupère un échantillon aléatoire de montagnes russes et le stocke dans `src/db/random-coasters.json`.
+- `pnpm run scrape` - récupère les montagnes russes depuis RCDB. Options `--startId`/`--endId` ou `--startPage`/`--endPage`. Les données brutes sont enregistrées dans `src/db/coasters-raw.json` puis, si `--saveData` vaut `true`, dans `src/db/coasters.json`.
+- `pnpm run scrape:theme-parks` - récupère les informations des parcs et les sauvegarde dans `src/db/theme-parks.json`.
+- `pnpm run scrape:map-coaster-photos` - associe les URL d'images des montagnes russes déjà récupérées avec l'URL de base configurée.
+- `pnpm run scrape:random` - récupère un échantillon aléatoire de montagnes russes et le stocke dans `src/db/random-coasters.json`.
 
-Ces scripts téléchargent les pages RCDB via `axios`, extraient les données avec `cheerio` et écrivent les fichiers JSON dans `src/db/`. Ils peuvent aussi être déclenchés via l'interface web qui communique avec un service démarrant les scripts npm et diffusant les logs en temps réel.
+Ces scripts téléchargent les pages RCDB via `axios`, extraient les données avec `cheerio` et écrivent les fichiers JSON dans `src/db/`. Ils peuvent aussi être déclenchés via l'interface web qui communique avec un service démarrant les scripts pnpm et diffusant les logs en temps réel.
 
 ### Routes de gestion des fichiers de scraping
 

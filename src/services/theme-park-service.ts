@@ -6,7 +6,7 @@ import { PaginatedResponse } from '@app/models';
 
 @Service()
 /**
- * Service providing access to theme park information stored in JSON files.
+ * Service fournissant l'accès aux informations des parcs d'attractions stockées dans des fichiers JSON.
  */
 export default class ThemeParkService {
   private _dbJson: JsonDB;
@@ -29,12 +29,12 @@ export default class ThemeParkService {
   public async getThemeParkById(themeParkId: number): Promise<ThemePark | undefined> {
     const themeParks: ThemePark[] = await this._getThemeParksDb();
 
-    // Return the park with the matching id if it exists
+    // Retourne le parc correspondant à l'identifiant s'il existe
     return themeParks.find(({ id }: ThemePark) => id === themeParkId);
   }
 
   /**
-   * Search a theme park by name.
+   * Recherche un parc d'attractions par son nom.
    */
   public async searchThemeParks(searchTerm: string): Promise<ThemePark[]> {
     const themeParks: ThemePark[] = await this._getThemeParksDb();

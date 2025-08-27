@@ -74,8 +74,8 @@ export default class Server {
       const expressRouter = Router();
       const controllerInstance: { [handleName: string]: Handler } = new ControllerClass();
 
-      // TODO: Refactor this code to make property injection more clear
-      // TODO: Define a service interface to be used as type to be injected
+      // Injecte les dépendances déclarées via les décorateurs.
+      // Chaque propriété typée reçoit l'instance correspondante du conteneur DI.
       injectedProperties.forEach(({ propertyKey, propertyType }) => {
         controllerInstance[propertyKey] = this._diContainer.getInjectable(propertyType);
       });

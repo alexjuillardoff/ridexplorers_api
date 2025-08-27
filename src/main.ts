@@ -9,6 +9,10 @@ import {
   CookieController
 } from '@app/controllers';
 
+/**
+ * Point d'entrée principal de l'application.
+ * Initialise le serveur Express et enregistre les différents contrôleurs.
+ */
 class Application {
   _appServer: Server;
 
