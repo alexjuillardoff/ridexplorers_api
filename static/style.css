@@ -32,7 +32,8 @@ input:focus {
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1000px;
+  min-width: 900px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -263,3 +264,4 @@ ul#files li {
   padding-left: 0;
   }
 }
+
