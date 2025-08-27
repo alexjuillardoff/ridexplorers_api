@@ -27,6 +27,21 @@
   <div class="container">
     <h1>Blog configuration</h1>
     <section>
+      <h2>Flows</h2>
+      <table id="flows-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Entries</th>
+            <th>Updated</th>
+            <th>JSON</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+    <section>
       <h2>Create flow</h2>
       <form id="flow-form" class="blog-form">
         <input name="name" placeholder="flow name" required />
@@ -83,6 +98,29 @@ uploadForm.addEventListener('submit', async (e) => {
   await fetch('/api/blog/' + flow + '/upload', { method: 'POST', body: fd });
   alert('uploaded');
 });
+
+async function loadFlows() {
+  const tbody = document.querySelector('#flows-table tbody');
+  try {
+    const res = await fetch('/api/blog/flows');
+    const data = await res.json();
+    tbody.innerHTML = '';
+    (data.items || []).forEach((flow) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${flow.name}</td>
+        <td>${flow.slug}</td>
+        <td>${flow.entriesCount}</td>
+        <td>${flow.updatedAt}</td>
+        <td><a href="${flow.jsonUrl}" target="_blank">JSON</a></td>`;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="5">Failed to load flows</td></tr>';
+  }
+}
+
+window.addEventListener('load', loadFlows);
   </script>
 </body>
 </html>
