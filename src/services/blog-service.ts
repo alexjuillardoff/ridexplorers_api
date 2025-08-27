@@ -2,6 +2,7 @@ import { Service } from '@lib/decorators';
 import JsonDB from '@app/db';
 import { __BLOG_FLOWS_DB_FILENAME__, __BLOG_ENTRIES_DB_FILENAME__ } from '@app/constants';
 import type { BlogFlow, BlogEntry } from '@app/types/blog';
+import { slugify } from '@app/utils';
 
 interface ListOptions {
   q?: string;
@@ -63,39 +64,54 @@ export default class BlogService {
     return { items: paginated, page, limit, total };
   }
 
-  public async createFlow(name: string, slug: string, schema: { [key: string]: string }): Promise<BlogFlow> {
+  public async createFlow(name: string, slug: string | undefined, schema: { [key: string]: string }): Promise<BlogFlow> {
     const flows = await this._getFlows();
-    if (flows.some((f) => f.slug === slug && !f.deletedAt)) {
+    const safeSlug = slug && slug.trim() ? slug : slugify(name);
+    if (flows.some((f) => f.slug === safeSlug && !f.deletedAt)) {
       throw new Error('Flow already exists');
     }
     const now = this._now();
-    const flow: BlogFlow = { id: Date.now(), name, slug, schema, createdAt: now, updatedAt: now };
+    const flow: BlogFlow = { id: Date.now(), name, slug: safeSlug, schema, createdAt: now, updatedAt: now };
     flows.push(flow);
     await this._db.writeDBFile(__BLOG_FLOWS_DB_FILENAME__, flows);
     return flow;
   }
 
-  public async renameFlow(slug: string, newName: string, newSlug: string): Promise<BlogFlow> {
+  public async renameFlow(slug: string, newName: string, newSlug?: string): Promise<BlogFlow> {
     const flows = await this._getFlows();
     const flow = flows.find((f) => f.slug === slug && !f.deletedAt);
     if (!flow) throw new Error('Flow not found');
-    if (newSlug !== slug && flows.some((f) => f.slug === newSlug && !f.deletedAt)) {
+    const safeSlug = newSlug && newSlug.trim() ? newSlug : slugify(newName);
+    if (safeSlug !== slug && flows.some((f) => f.slug === safeSlug && !f.deletedAt)) {
       throw new Error('Slug already exists');
     }
     flow.name = newName;
-    flow.slug = newSlug;
+    flow.slug = safeSlug;
     flow.updatedAt = this._now();
     await this._db.writeDBFile(__BLOG_FLOWS_DB_FILENAME__, flows);
     return flow;
   }
 
-  public async duplicateFlow(slug: string, newName: string, newSlug: string, withEntries: boolean): Promise<BlogFlow> {
+  public async duplicateFlow(
+    slug: string,
+    newName: string,
+    newSlug?: string,
+    withEntries = false
+  ): Promise<BlogFlow> {
     const flows = await this._getFlows();
     const original = flows.find((f) => f.slug === slug && !f.deletedAt);
     if (!original) throw new Error('Flow not found');
-    if (flows.some((f) => f.slug === newSlug && !f.deletedAt)) throw new Error('Slug already exists');
+    const safeSlug = newSlug && newSlug.trim() ? newSlug : slugify(newName);
+    if (flows.some((f) => f.slug === safeSlug && !f.deletedAt)) throw new Error('Slug already exists');
     const now = this._now();
-    const copy: BlogFlow = { id: Date.now(), name: newName, slug: newSlug, schema: { ...original.schema }, createdAt: now, updatedAt: now };
+    const copy: BlogFlow = {
+      id: Date.now(),
+      name: newName,
+      slug: safeSlug,
+      schema: { ...original.schema },
+      createdAt: now,
+      updatedAt: now,
+    };
     flows.push(copy);
     await this._db.writeDBFile(__BLOG_FLOWS_DB_FILENAME__, flows);
     if (withEntries) {
