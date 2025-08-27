@@ -101,6 +101,17 @@ export default class BlogController {
     }
   }
 
+  @Patch('/:slug/:entryId')
+  public async updateEntry(req: Request, res: Response) {
+    const { slug, entryId } = req.params;
+    try {
+      await this._blogService.updateEntry(slug, Number(entryId), req.body);
+      res.status(200).json({ message: 'updated' });
+    } catch (e: any) {
+      res.status(400).json({ message: e.message });
+    }
+  }
+
   @Post('/:slug/upload')
   public uploadJson(req: Request, res: Response) {
     const { slug } = req.params;
