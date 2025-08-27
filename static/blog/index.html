@@ -224,9 +224,14 @@ async function loadFlows() {
 
       const deleteBtn = tr.querySelector('.delete-btn');
       deleteBtn.addEventListener('click', async () => {
+        const slug = flow.slug;
+        if (!slug) {
+          alert('Missing slug');
+          return;
+        }
         if (!confirm(`Delete flow "${flow.name}"?`)) return;
         try {
-          const res = await fetch(`/api/blog/flows/${flow.slug}`, { method: 'DELETE' });
+          const res = await fetch(`/api/blog/flows/${slug}`, { method: 'DELETE' });
           if (!res.ok) throw new Error('Request failed');
           await loadFlows();
         } catch (e) {
