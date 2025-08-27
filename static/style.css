@@ -196,7 +196,7 @@ ul#files li {
 }
 
 .feeds-column {
-  flex: 0 0 25%;
+  flex: 0 0 35%;
   border-right: 1px solid #ddd;
   padding-right: 1rem;
 }
@@ -238,7 +238,7 @@ ul#files li {
 }
 
 .editor-column {
-  flex: 0 0 75%;
+  flex: 0 0 65%;
   padding-left: 1rem;
 }
 
