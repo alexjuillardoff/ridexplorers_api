@@ -33,6 +33,17 @@ test('create, duplicate, rename and delete flow', async () => {
   assert.equal(afterDelete.total, 1);
 });
 
+test('generates slugs from names when missing', async () => {
+  await resetDB();
+  const service = new BlogService();
+  const created = await service.createFlow('Hello World', undefined, { title: 'string' });
+  assert.equal(created.slug, 'hello-world');
+  const duplicated = await service.duplicateFlow('hello-world', 'Copy Flow');
+  assert.equal(duplicated.slug, 'copy-flow');
+  const renamed = await service.renameFlow('hello-world', 'New Name');
+  assert.equal(renamed.slug, 'new-name');
+});
+
 test('listFlows handles flows missing slug or name', async () => {
   await resetDB();
   const now = new Date().toISOString();
