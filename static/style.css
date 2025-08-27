@@ -56,7 +56,31 @@ section {
   margin-bottom: 2rem;
 }
 
-@@ -60,63 +85,53 @@ ul#files li {
+pre {
+  font-family: monospace;
+  background: #f6f8fa;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  overflow-y: auto;
+}
+
+#file-content {
+  max-height: 300px;
+}
+
+ul#files {
+  list-style: none;
+  padding: 0;
+}
+
+ul#files li {
+  padding: 0.25rem 0;
+}
+
+.file-name {
+  cursor: pointer;
+}
+
 .file-item {
   display: flex;
   align-items: center;
@@ -110,7 +134,43 @@ section {
 }
 
 /* New navbar styles */
-@@ -160,63 +175,92 @@ ul#files li {
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0366d6;
+  color: #fff;
+  padding: 0.5rem 1rem;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 0.5rem;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  background: #f6f8fa;
+  padding: 0.5rem 1rem;
+}
+
+.nav-links a {
+  margin-right: 1rem;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.api-name {
   font-weight: bold;
   margin-right: 1rem;
 }
@@ -200,6 +260,6 @@ section {
   }
   .editor-column {
     flex: 0 0 100%;
-    padding-left: 0;
+  padding-left: 0;
   }
 }
