@@ -208,3 +208,27 @@ ul#files li {
 .toast.show {
   opacity: 1;
 }
+
+#search-input {
+  padding: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+#flows-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#flows-table th,
+#flows-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+#flows-table th.sortable {
+  cursor: pointer;
+}
+
+#payload-editor {
+  height: 200px;
+}
