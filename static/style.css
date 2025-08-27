@@ -6,6 +6,31 @@ body {
   margin: 0;
 }
 
+button {
+  background: #0366d6;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #024ea2;
+}
+
+input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.4rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: #0366d6;
+  box-shadow: 0 0 0 2px rgba(3, 102, 214, 0.2);
+}
+
 .container {
   max-width: 800px;
   margin: 2rem auto;
@@ -82,19 +107,9 @@ ul#files li {
   margin-bottom: 1rem;
   gap: 0.5rem;
 }
-
-#login-form input {
-  padding: 0.25rem;
-}
-
-#login-form button {
-  padding: 0.25rem 0.5rem;
-}
-
 #logout-button {
   display: inline-block;
   margin-bottom: 1rem;
-  padding: 0.25rem 0.5rem;
 }
 
 .auth-status {
@@ -182,7 +197,7 @@ ul#files li {
 }
 
 .feeds-column {
-  width: 200px;
+  flex: 0 0 25%;
   border-right: 1px solid #ddd;
   padding-right: 1rem;
 }
@@ -198,10 +213,21 @@ ul#files li {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
+ .feed-item:hover {
+   background: #f0f4ff;
+ }
+
+ .feed-item.active {
+   background: #e6f0ff;
+ }
+
 .feed-name {
-  cursor: pointer;
+  flex: 1;
 }
 
 .feed-name:hover {
@@ -213,10 +239,28 @@ ul#files li {
 }
 
 .editor-column {
-  flex: 1;
+  flex: 0 0 75%;
   padding-left: 1rem;
 }
 
 .feeds-header {
   margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .blog-manager {
+    flex-direction: column;
+  }
+  .feeds-column {
+    flex: 0 0 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    padding-right: 0;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+  .editor-column {
+    flex: 0 0 100%;
+    padding-left: 0;
+  }
 }

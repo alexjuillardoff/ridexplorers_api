@@ -4,6 +4,7 @@
   const editorContainer = document.getElementById('feed-editor');
   const saveBtn = document.getElementById('save-feed');
   const editorTitle = document.getElementById('editor-title');
+  const noFeedMsg = document.getElementById('no-feed-message');
 
   let editor = new JSONEditor(editorContainer, { mode: 'code' });
   let currentSlug = null;
@@ -28,10 +29,11 @@
         feeds.forEach(f => {
           const li = document.createElement('li');
           li.className = 'feed-item';
+          li.dataset.slug = f.slug;
+          li.addEventListener('click', () => openFeed(f));
           const nameSpan = document.createElement('span');
           nameSpan.textContent = f.name;
           nameSpan.className = 'feed-name';
-          nameSpan.addEventListener('click', () => openFeed(f));
           const actions = document.createElement('span');
           actions.className = 'feed-actions';
           actions.appendChild(createActionButton('Voir', (e) => {
@@ -60,12 +62,17 @@
               editor.set({});
               editorTitle.textContent = '';
               saveBtn.style.display = 'none';
+              editorContainer.style.display = 'none';
+              noFeedMsg.style.display = 'block';
               currentSlug = null;
             }
             loadFeeds();
           }));
           li.appendChild(nameSpan);
           li.appendChild(actions);
+          if (currentSlug === f.slug) {
+            li.classList.add('active');
+          }
           listEl.appendChild(li);
         });
       });
@@ -75,8 +82,13 @@
     currentSlug = feed.slug;
     editorTitle.textContent = feed.name;
     saveBtn.style.display = 'inline-block';
+    editorContainer.style.display = 'block';
+    noFeedMsg.style.display = 'none';
     const content = await fetch(`/api/blog/feeds/${feed.slug}`, { headers: authHeader() }).then(r => r.json());
     editor.set(content);
+    document.querySelectorAll('.feed-item').forEach(li => {
+      li.classList.toggle('active', li.dataset.slug === currentSlug);
+    });
   }
 
   saveBtn.addEventListener('click', async () => {
