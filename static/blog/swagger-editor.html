@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Swagger Editor</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    #editor-frame {
+      width: 100%;
+      height: calc(100vh - 100px);
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="api-name">RIDEXPLORERS API</span>
+    <div class="navbar-right">
+      <span class="auth-status" id="auth-status"></span>
+      <form id="login-form">
+        <input id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <button type="submit">Login</button>
+      </form>
+      <button id="logout-button" style="display:none;">Logout</button>
+    </div>
+  </div>
+  <nav class="nav-links">
+    <a href="/">Accueil</a>
+    <a href="/docs" target="_blank">Swagger Docs</a>
+    <a href="/files.html">Gestionnaire de fichiers</a>
+    <a href="/blog/">Blog</a>
+    <a href="/blog/swagger-editor.html">Swagger Editor</a>
+  </nav>
+  <iframe id="editor-frame" src="https://editor.swagger.io/?url=/swagger.json"></iframe>
+  <div id="cookie-banner" class="cookie-banner">
+    Ce site utilise des cookies techniques uniquement. <button id="accept-cookies">OK</button>
+  </div>
+  <script src="../login.js"></script>
+  <script src="../cookies.js"></script>
+</body>
+</html>
