@@ -110,11 +110,20 @@ entryForm.addEventListener('submit', async (e) => {
     alert('Invalid JSON');
     return;
   }
-  await fetch('/api/blog/' + flow, {
+  const res = await fetch('/api/blog/' + flow, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
+  if (!res.ok) {
+    let errMsg = 'Failed to add entry';
+    try {
+      const data = await res.json();
+      errMsg = data.error || data.message || errMsg;
+    } catch {}
+    showToast(errMsg);
+    return;
+  }
   showToast('entry added');
   entryForm.reset();
   payloadEditor.set({});
