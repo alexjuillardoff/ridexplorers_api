@@ -51,7 +51,11 @@ export default class BlogService {
     }));
     if (q) {
       const lower = q.toLowerCase();
-      items = items.filter((f) => f.name.toLowerCase().includes(lower) || f.slug.toLowerCase().includes(lower));
+      items = items.filter(
+        (f) =>
+          (f.name && f.name.toLowerCase().includes(lower)) ||
+          (f.slug && f.slug.toLowerCase().includes(lower))
+      );
     }
     const total = items.length;
     const start = (page - 1) * limit;
