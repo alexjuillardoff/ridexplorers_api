@@ -54,6 +54,16 @@ Le serveur lit plusieurs variables facultatives dans un fichier `.env`. Ces vari
 
 Un fichier `.env.example` est fourni. Dupliquez-le en `.env` et adaptez les valeurs.
 
+### Tests
+
+Une suite de tests accompagne le projet. Exécutez-la avec :
+
+```bash
+pnpm test
+```
+
+Cette commande utilise le runner de tests natif de Node pour valider les endpoints et utilitaires.
+
 ---
 
 ## Scraping des données (installation locale)
