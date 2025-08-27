@@ -32,3 +32,15 @@ test('create, duplicate, rename and delete flow', async () => {
   const afterDelete = await service.listFlows({});
   assert.equal(afterDelete.total, 1);
 });
+
+test('listFlows handles flows missing slug or name', async () => {
+  await resetDB();
+  const now = new Date().toISOString();
+  await db.writeDBFile(__BLOG_FLOWS_DB_FILENAME__, [
+    { id: 1, name: 'Valid', slug: 'valid', schema: {}, createdAt: now, updatedAt: now },
+    { id: 2, name: 'Broken', schema: {}, createdAt: now, updatedAt: now } as any,
+  ]);
+  const service = new BlogService();
+  const list = await service.listFlows({ q: 'something' });
+  assert.equal(list.total, 0);
+});
