@@ -17,7 +17,7 @@ export interface ScrapeTask {
 
 @Service()
 /**
- * Runs the scraping npm scripts and streams their output through Socket.IO.
+ * Exécute les scripts de scraping via pnpm et diffuse leurs logs en temps réel avec Socket.IO.
  */
 export default class ScrapeService {
   private _currentProcess: ChildProcessWithoutNullStreams | null = null;
@@ -27,8 +27,8 @@ export default class ScrapeService {
   private _currentTaskId: number | null = null;
 
   /**
-   * Launch a scraping npm script and forward its output to connected clients.
-   * Only one task can run at a time. Returns the task information when started.
+   * Lance un script de scraping via pnpm et retransmet sa sortie aux clients connectés.
+   * Une seule tâche peut s'exécuter à la fois. Renvoie les informations de la tâche démarrée.
    */
   async start(script: string): Promise<ScrapeTask> {
     if (this._currentProcess) {
@@ -48,7 +48,7 @@ export default class ScrapeService {
     this._logCache = task.logs;
 
     return new Promise((resolve, reject) => {
-      const child = spawn('npm', ['run', script], { shell: true });
+      const child = spawn('pnpm', ['run', script], { shell: true });
       this._currentProcess = child;
 
       const send = (event: string, msg: string) => {

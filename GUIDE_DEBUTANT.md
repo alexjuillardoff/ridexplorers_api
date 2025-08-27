@@ -6,6 +6,7 @@ Ce guide décrit, étape par étape, comment installer et exécuter **RIDEXPLORE
 
 - **Node.js 18** ou version supérieure. Téléchargez l'installateur depuis [nodejs.org](https://nodejs.org/) et installez-le comme n'importe quel programme.
 - **Git** pour récupérer le code du projet. Sur Windows vous pouvez installer [Git for Windows](https://git-scm.com/download/win). Sur macOS ou Linux, `git` est généralement disponible via le gestionnaire de paquets (`brew`, `apt`, `dnf`, ...).
+- **pnpm** pour gérer les dépendances (`npm install -g pnpm` si besoin).
 
 Vérifiez que les outils sont bien installés :
 
@@ -31,7 +32,7 @@ La dernière ligne vous place dans le dossier du projet. Toutes les commandes su
 Toutes les bibliothèques nécessaires sont listées dans `package.json`. Installez-les avec :
 
 ```bash
-npm install   # télécharge toutes les dépendances
+pnpm install   # télécharge toutes les dépendances
 ```
 
 Cette étape peut prendre quelques minutes.
@@ -60,7 +61,7 @@ Vous pouvez modifier les valeurs selon vos besoins. Si vous ne créez pas ce fic
 Avant de lancer le serveur en production, compilez le code TypeScript vers JavaScript :
 
 ```bash
-npm run build   # génère les fichiers dans le dossier dist/
+pnpm run build   # génère les fichiers dans le dossier dist/
 ```
 
 Cette commande crée un dossier `dist/` contenant le JavaScript prêt pour la production.
@@ -70,13 +71,13 @@ Cette commande crée un dossier `dist/` contenant le JavaScript prêt pour la pr
 - **Mode développement** (recharge automatique à chaque modification) :
 
 ```bash
-npm run start:dev
+pnpm run start:dev
 ```
 
 - **Mode production** (exécute la version compilée) :
 
 ```bash
-npm run start:prod
+pnpm run start:prod
 ```
 
 Par défaut, l'API écoute sur le port `8000`. Une fois démarrée, ouvrez [http://localhost:8000/docs](http://localhost:8000/docs) pour accéder à la documentation interactive.
@@ -99,9 +100,9 @@ Le projet permet de récupérer les données depuis RCDB. Les scripts peuvent ê
 - Depuis le terminal :
 
 ```bash
-npm run scrape           # récupère les montagnes russes
-npm run scrape:theme-parks # récupère les parcs d'attractions
-npm run scrape:random # récupère un échantillon aléatoire
+pnpm run scrape           # récupère les montagnes russes
+pnpm run scrape:theme-parks # récupère les parcs d'attractions
+pnpm run scrape:random # récupère un échantillon aléatoire
 ```
 
 - Via l'API (exemple) :

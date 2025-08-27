@@ -7,7 +7,7 @@
     "build": "rm -rf dist && tsc && tsc-alias",
     "start:prod": "node dist/main.js",
     "start:dev": "nodemon",
-    "scrape": "ts-node -r tsconfig-paths/register ./src/scraping/main.ts && npm run scrape:map-coaster-photos",
+    "scrape": "ts-node -r tsconfig-paths/register ./src/scraping/main.ts && pnpm run scrape:map-coaster-photos",
     "scrape:theme-parks": "ts-node -r tsconfig-paths/register ./src/scraping/scrape-theme-parks",
     "scrape:map-coaster-photos": "ts-node -r tsconfig-paths/register ./src/scraping/map-coaster-photos.ts",
     "scrape:random": "ts-node -r tsconfig-paths/register ./src/scraping/scrape-random-coasters.ts",

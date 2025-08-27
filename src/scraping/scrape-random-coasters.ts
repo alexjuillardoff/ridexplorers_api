@@ -23,6 +23,6 @@ function getRandomIds(amount: number, min: number, max: number): number[] {
 
   await db.writeDBFile(__RANDOM_COASTERS_DB_FILENAME__, coasters);
 
-  // If you need to map images to a static path, run:
-  // npm run scrape:map-coaster-photos
+  // Si vous devez mapper les images vers un chemin statique, lancez :
+  // pnpm run scrape:map-coaster-photos
 })();
