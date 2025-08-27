@@ -13,22 +13,22 @@ export default class BlogController {
   }
 
   @Post('/feeds')
-  public async saveFeed(req: Request, res: Response): Promise<void> {
+  public async createFeed(req: Request, res: Response): Promise<void> {
     const { name, schema } = req.body;
     if (!name || !schema) {
       res.status(400).json({ error: 'name and schema required' });
       return;
     }
-    await this._blogService.saveFeed(name, schema);
+    await this._blogService.createFeed(name, schema);
     res.status(200).json({ name, schema });
   }
 
   @Get('/feeds/:feed')
-  public async getFeed(req: Request, res: Response): Promise<void> {
+  public async getFeedItems(req: Request, res: Response): Promise<void> {
     const { feed } = req.params;
     try {
-      const blogFeed = await this._blogService.getFeed(feed);
-      res.status(200).json(blogFeed);
+      const items = await this._blogService.getFeedItems(feed);
+      res.status(200).json(items);
     } catch (e: any) {
       res.status(404).json({ error: e.message });
     }
