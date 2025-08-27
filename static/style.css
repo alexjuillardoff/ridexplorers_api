@@ -176,3 +176,47 @@ ul#files li {
   font-weight: bold;
 }
 
+.blog-manager {
+  display: flex;
+  gap: 1rem;
+}
+
+.feeds-column {
+  width: 200px;
+  border-right: 1px solid #ddd;
+  padding-right: 1rem;
+}
+
+#feeds-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feed-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.feed-name {
+  cursor: pointer;
+}
+
+.feed-name:hover {
+  text-decoration: underline;
+}
+
+.feed-actions button {
+  margin-left: 0.25rem;
+}
+
+.editor-column {
+  flex: 1;
+  padding-left: 1rem;
+}
+
+.feeds-header {
+  margin-bottom: 1rem;
+}

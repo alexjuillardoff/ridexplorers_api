@@ -1,63 +1,105 @@
 (function(){
-  const schemaContainer = document.getElementById('schema-editor');
-  const itemContainer = document.getElementById('item-editor');
-  const feedNameInput = document.getElementById('feed-name');
-  const feedSelect = document.getElementById('feed-select');
-  const saveFeedBtn = document.getElementById('save-feed');
-  const addItemBtn = document.getElementById('add-item');
+  const listEl = document.getElementById('feeds-list');
+  const createBtn = document.getElementById('create-feed');
+  const editorContainer = document.getElementById('feed-editor');
+  const saveBtn = document.getElementById('save-feed');
+  const editorTitle = document.getElementById('editor-title');
 
-  const schemaEditor = new JSONEditor(schemaContainer, { mode: 'code' });
-  let itemEditor = new JSONEditor(itemContainer, { mode: 'code' });
+  let editor = new JSONEditor(editorContainer, { mode: 'code' });
+  let currentSlug = null;
 
   function authHeader() {
     const token = localStorage.getItem('authToken');
     return token ? { Authorization: 'Basic ' + token } : {};
   }
 
+  function createActionButton(label, handler) {
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    btn.addEventListener('click', handler);
+    return btn;
+  }
+
   function loadFeeds() {
     fetch('/api/blog/feeds', { headers: authHeader() })
       .then(r => r.json())
       .then(feeds => {
-        feedSelect.innerHTML = '<option value="">-- Choisir un flux --</option>';
+        listEl.innerHTML = '';
         feeds.forEach(f => {
-          const opt = document.createElement('option');
-          opt.value = f.name;
-          opt.textContent = f.name;
-          opt.dataset.schema = JSON.stringify(f.schema || {});
-          feedSelect.appendChild(opt);
+          const li = document.createElement('li');
+          li.className = 'feed-item';
+          const nameSpan = document.createElement('span');
+          nameSpan.textContent = f.name;
+          nameSpan.className = 'feed-name';
+          nameSpan.addEventListener('click', () => openFeed(f));
+          const actions = document.createElement('span');
+          actions.className = 'feed-actions';
+          actions.appendChild(createActionButton('Voir', (e) => {
+            e.stopPropagation();
+            window.open(`/blog/${f.slug}`, '_blank');
+          }));
+          actions.appendChild(createActionButton('Renommer', async (e) => {
+            e.stopPropagation();
+            const name = prompt('Nouveau nom', f.name);
+            if (!name) return;
+            const res = await fetch(`/api/blog/feeds/${f.slug}/rename`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', ...authHeader() },
+              body: JSON.stringify({ name })
+            });
+            const updated = await res.json();
+            loadFeeds();
+            if (currentSlug === f.slug) {
+              openFeed(updated);
+            }
+          }));
+          actions.appendChild(createActionButton('Supprimer', async (e) => {
+            e.stopPropagation();
+            await fetch(`/api/blog/feeds/${f.slug}`, { method: 'DELETE', headers: authHeader() });
+            if (currentSlug === f.slug) {
+              editor.set({});
+              editorTitle.textContent = '';
+              saveBtn.style.display = 'none';
+              currentSlug = null;
+            }
+            loadFeeds();
+          }));
+          li.appendChild(nameSpan);
+          li.appendChild(actions);
+          listEl.appendChild(li);
         });
       });
   }
 
-  feedSelect.addEventListener('change', () => {
-    const selected = feedSelect.options[feedSelect.selectedIndex];
-    const schema = selected.dataset.schema ? JSON.parse(selected.dataset.schema) : {};
-    feedNameInput.value = selected.value;
-    schemaEditor.set(schema);
-    itemEditor.destroy();
-    itemEditor = new JSONEditor(itemContainer, { mode: 'code', schema });
-    itemEditor.set({});
-  });
+  async function openFeed(feed) {
+    currentSlug = feed.slug;
+    editorTitle.textContent = feed.name;
+    saveBtn.style.display = 'inline-block';
+    const content = await fetch(`/api/blog/feeds/${feed.slug}`, { headers: authHeader() }).then(r => r.json());
+    editor.set(content);
+  }
 
-  saveFeedBtn.addEventListener('click', () => {
-    const name = feedNameInput.value;
-    const schema = schemaEditor.get();
-    fetch('/api/blog/feeds', {
-      method: 'POST',
+  saveBtn.addEventListener('click', async () => {
+    if (!currentSlug) return;
+    const content = editor.get();
+    await fetch(`/api/blog/feeds/${currentSlug}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json', ...authHeader() },
-      body: JSON.stringify({ name, schema })
-    }).then(() => loadFeeds());
-  });
-
-  addItemBtn.addEventListener('click', () => {
-    const feed = feedSelect.value || feedNameInput.value;
-    if (!feed) return;
-    const item = itemEditor.get();
-    fetch(`/api/blog/feeds/${encodeURIComponent(feed)}/items`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...authHeader() },
-      body: JSON.stringify(item)
+      body: JSON.stringify(content)
     });
+  });
+
+  createBtn.addEventListener('click', async () => {
+    const name = prompt('Nom du flux');
+    if (!name) return;
+    const res = await fetch('/api/blog/feeds', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeader() },
+      body: JSON.stringify({ name })
+    });
+    const feed = await res.json();
+    loadFeeds();
+    openFeed(feed);
   });
 
   loadFeeds();

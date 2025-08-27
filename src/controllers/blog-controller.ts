@@ -1,5 +1,5 @@
 import { BlogService } from '@app/services';
-import { Controller, Get, Inject, Post } from '@lib/decorators';
+import { Controller, Delete, Get, Inject, Post, Put } from '@lib/decorators';
 import type { Request, Response } from 'express';
 
 @Controller('/api/blog')
@@ -14,33 +14,64 @@ export default class BlogController {
 
   @Post('/feeds')
   public async createFeed(req: Request, res: Response): Promise<void> {
-    const { name, schema } = req.body;
-    if (!name || !schema) {
-      res.status(400).json({ error: 'name and schema required' });
+    const { name } = req.body;
+    if (!name) {
+      res.status(400).json({ error: 'name required' });
       return;
     }
-    await this._blogService.createFeed(name, schema);
-    res.status(200).json({ name, schema });
+    try {
+      const feed = await this._blogService.createFeed(name);
+      res.status(200).json(feed);
+    } catch (e: any) {
+      res.status(400).json({ error: e.message });
+    }
   }
 
-  @Get('/feeds/:feed')
-  public async getFeedItems(req: Request, res: Response): Promise<void> {
-    const { feed } = req.params;
+  @Get('/feeds/:slug')
+  public async getFeed(req: Request, res: Response): Promise<void> {
+    const { slug } = req.params;
     try {
-      const items = await this._blogService.getFeedItems(feed);
-      res.status(200).json(items);
+      const content = await this._blogService.getFeed(slug);
+      res.status(200).json(content);
     } catch (e: any) {
       res.status(404).json({ error: e.message });
     }
   }
 
-  @Post('/feeds/:feed/items')
-  public async addItem(req: Request, res: Response): Promise<void> {
-    const { feed } = req.params;
-    const item = req.body;
+  @Put('/feeds/:slug')
+  public async updateFeed(req: Request, res: Response): Promise<void> {
+    const { slug } = req.params;
+    const content = req.body;
     try {
-      await this._blogService.addItem(feed, item);
+      await this._blogService.updateFeed(slug, content);
       res.status(200).json({ ok: true });
+    } catch (e: any) {
+      res.status(400).json({ error: e.message });
+    }
+  }
+
+  @Delete('/feeds/:slug')
+  public async deleteFeed(req: Request, res: Response): Promise<void> {
+    const { slug } = req.params;
+    try {
+      await this._blogService.deleteFeed(slug);
+      res.status(200).json({ ok: true });
+    } catch (e: any) {
+      res.status(404).json({ error: e.message });
+    }
+  }
+
+  @Post('/feeds/:slug/rename')
+  public async renameFeed(req: Request, res: Response): Promise<void> {
+    const { slug } = req.params;
+    const { name } = req.body;
+    if (!name) {
+      res.status(400).json({ error: 'name required' });
+      return;
+    }
+    try {
+      const feed = await this._blogService.renameFeed(slug, name);
+      res.status(200).json(feed);
     } catch (e: any) {
       res.status(400).json({ error: e.message });
     }
