@@ -28,6 +28,15 @@ export default class BlogService {
     await this._db.writeDBFile(__BLOG_FEEDS_DB_FILENAME__, feeds);
   }
 
+  public async getFeed(feedName: string): Promise<BlogFeed> {
+    const feeds = await this._getFeeds();
+    const feed = feeds[feedName];
+    if (!feed) {
+      throw new Error(`Feed ${feedName} not found`);
+    }
+    return feed;
+  }
+
   public async addItem(feedName: string, item: any): Promise<void> {
     const feeds = await this._getFeeds();
     const feed = feeds[feedName];
