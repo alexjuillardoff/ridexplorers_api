@@ -55,3 +55,16 @@ test('listFlows handles flows missing slug or name', async () => {
   const list = await service.listFlows({ q: 'something' });
   assert.equal(list.total, 0);
 });
+
+test('updateEntry updates payload and validates keys', async () => {
+  await resetDB();
+  const service = new BlogService();
+  await service.createFlow('News', 'news', { title: 'string' });
+  await service.addEntry('news', { title: 'Old' });
+  const entries = await service.getEntries('news', { limit: 10 });
+  const id = entries.items[0].id;
+  await service.updateEntry('news', id, { title: 'New' });
+  const updated = await service.getEntries('news', { limit: 10 });
+  assert.equal(updated.items[0].payload.title, 'New');
+  await assert.rejects(service.updateEntry('news', id, { wrong: 'X' }));
+});

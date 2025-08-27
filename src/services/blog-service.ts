@@ -149,6 +149,26 @@ export default class BlogService {
     await this._db.writeDBFile(__BLOG_FLOWS_DB_FILENAME__, flows);
   }
 
+  public async updateEntry(slug: string, entryId: number, payload: { [key: string]: any }) {
+    const flows = await this._getFlows();
+    const flow = flows.find((f) => f.slug === slug && !f.deletedAt);
+    if (!flow) throw new Error(`Flow ${slug} not found`);
+    const entries = await this._getEntries();
+    const entry = entries.find((e) => e.id === entryId && e.flowId === flow.id);
+    if (!entry) throw new Error('Entry not found');
+    const entryKeys = Object.keys(payload);
+    const hasSameKeys =
+      Object.keys(flow.schema).every((k) => entryKeys.includes(k)) &&
+      entryKeys.every((k) => Object.keys(flow.schema).includes(k));
+    if (!hasSameKeys) throw new Error('Invalid entry keys');
+    const now = this._now();
+    entry.payload = payload;
+    entry.updatedAt = now;
+    flow.updatedAt = now;
+    await this._db.writeDBFile(__BLOG_ENTRIES_DB_FILENAME__, entries);
+    await this._db.writeDBFile(__BLOG_FLOWS_DB_FILENAME__, flows);
+  }
+
   public async getEntries(slug: string, { page = 1, limit = 25, sort = 'desc', since, until }: EntryQuery) {
     const flows = await this._getFlows();
     const flow = flows.find((f) => f.slug === slug && !f.deletedAt);

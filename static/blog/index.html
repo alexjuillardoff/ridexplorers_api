@@ -57,11 +57,15 @@
       </form>
     </section>
     <section>
-      <h2>Add entry</h2>
+      <h2>Entries</h2>
       <form id="entry-form" class="blog-form">
         <input name="flow" placeholder="flow" required />
+        <button type="button" id="load-entries">Load</button>
+        <select id="entry-select">
+          <option value="">New entry</option>
+        </select>
         <div id="payload-editor"></div>
-        <button type="submit">Add</button>
+        <button type="submit">Save</button>
       </form>
     </section>
     <section>
@@ -95,11 +99,50 @@ flowForm.addEventListener('submit', async (e) => {
 });
 
 const entryForm = document.getElementById('entry-form');
+const loadEntriesBtn = document.getElementById('load-entries');
+const entrySelect = document.getElementById('entry-select');
 const payloadEditor = new JSONEditor(document.getElementById('payload-editor'), {
   mode: 'code',
   modes: ['code', 'tree']
 });
+let loadedEntries = [];
 payloadEditor.set({});
+
+async function loadEntries() {
+  const flow = entryForm.flow.value;
+  if (!flow) {
+    alert('Missing flow');
+    return;
+  }
+  try {
+    const res = await fetch('/api/blog/' + flow + '?limit=100');
+    if (!res.ok) throw new Error('Request failed');
+    const data = await res.json();
+    loadedEntries = data.items || [];
+    entrySelect.innerHTML = '<option value="">New entry</option>';
+    loadedEntries.forEach((entry) => {
+      const opt = document.createElement('option');
+      opt.value = entry.id;
+      opt.textContent = entry.id;
+      entrySelect.appendChild(opt);
+    });
+  } catch (err) {
+    alert('Failed to load entries');
+  }
+}
+
+loadEntriesBtn.addEventListener('click', loadEntries);
+
+entrySelect.addEventListener('change', () => {
+  const id = Number(entrySelect.value);
+  if (!id) {
+    payloadEditor.set({});
+    return;
+  }
+  const entry = loadedEntries.find((e) => e.id === id);
+  if (entry) payloadEditor.set(entry.payload);
+});
+
 entryForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const flow = entryForm.flow.value;
@@ -110,14 +153,22 @@ entryForm.addEventListener('submit', async (e) => {
     alert('Invalid JSON');
     return;
   }
-  await fetch('/api/blog/' + flow, {
-    method: 'POST',
+  const entryId = entrySelect.value;
+  const url = '/api/blog/' + flow + (entryId ? '/' + entryId : '');
+  const method = entryId ? 'PATCH' : 'POST';
+  const res = await fetch(url, {
+    method,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
-  showToast('entry added');
-  entryForm.reset();
-  payloadEditor.set({});
+  if (!res.ok) {
+    alert('Request failed');
+    return;
+  }
+  showToast(entryId ? 'entry updated' : 'entry added');
+  if (!entryId) payloadEditor.set({});
+  entrySelect.value = '';
+  await loadEntries();
 });
 
 const uploadForm = document.getElementById('upload-form');
