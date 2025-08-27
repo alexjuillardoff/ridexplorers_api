@@ -23,6 +23,17 @@ export default class BlogController {
     res.status(200).json({ name, schema });
   }
 
+  @Get('/feeds/:feed')
+  public async getFeed(req: Request, res: Response): Promise<void> {
+    const { feed } = req.params;
+    try {
+      const blogFeed = await this._blogService.getFeed(feed);
+      res.status(200).json(blogFeed);
+    } catch (e: any) {
+      res.status(404).json({ error: e.message });
+    }
+  }
+
   @Post('/feeds/:feed/items')
   public async addItem(req: Request, res: Response): Promise<void> {
     const { feed } = req.params;
