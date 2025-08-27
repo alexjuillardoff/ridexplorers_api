@@ -28,19 +28,21 @@
     <h1>Blog configuration</h1>
     <section>
       <h2>Flows</h2>
+      <input id="search-input" placeholder="Search" />
       <table id="flows-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Slug</th>
-            <th>Entries</th>
-            <th>Updated</th>
+            <th data-sort="name" class="sortable">Name</th>
+            <th data-sort="slug" class="sortable">Slug</th>
+            <th data-sort="entriesCount" class="sortable">Entries</th>
+            <th data-sort="updatedAt" class="sortable">Updated</th>
             <th>JSON</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
+      <div id="pagination"></div>
     </section>
     <section>
       <h2>Create flow</h2>
@@ -100,13 +102,52 @@ uploadForm.addEventListener('submit', async (e) => {
   alert('uploaded');
 });
 
+let q = '';
+let page = 1;
+const limit = 10;
+let sortField = '';
+let sortDir = 'asc';
+
+const searchInput = document.getElementById('search-input');
+searchInput.addEventListener('input', (e) => {
+  q = e.target.value;
+  page = 1;
+  loadFlows();
+});
+
+document.querySelectorAll('#flows-table th.sortable').forEach((th) => {
+  th.addEventListener('click', () => {
+    const field = th.getAttribute('data-sort');
+    if (sortField === field) {
+      sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortField = field;
+      sortDir = 'asc';
+    }
+    page = 1;
+    loadFlows();
+  });
+});
+
 async function loadFlows() {
   const tbody = document.querySelector('#flows-table tbody');
+  const params = new URLSearchParams({ q, page: String(page), limit: String(limit) });
+  if (sortField) params.append('sort', `${sortField}:${sortDir}`);
   try {
-    const res = await fetch('/api/blog/flows');
+    const res = await fetch('/api/blog/flows?' + params.toString());
     const data = await res.json();
     tbody.innerHTML = '';
-    (data.items || []).forEach((flow) => {
+    let items = data.items || [];
+    if (sortField) {
+      items.sort((a, b) => {
+        const v1 = a[sortField];
+        const v2 = b[sortField];
+        if (v1 < v2) return sortDir === 'asc' ? -1 : 1;
+        if (v1 > v2) return sortDir === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    items.forEach((flow) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${flow.name}</td>
@@ -172,6 +213,35 @@ async function loadFlows() {
 
       tbody.appendChild(tr);
     });
+
+    const pagination = document.getElementById('pagination');
+    if (data.total > data.limit) {
+      const totalPages = Math.ceil(data.total / data.limit);
+      pagination.innerHTML = '';
+      if (page > 1) {
+        const prev = document.createElement('button');
+        prev.textContent = 'Prev';
+        prev.addEventListener('click', () => {
+          page--;
+          loadFlows();
+        });
+        pagination.appendChild(prev);
+      }
+      const info = document.createElement('span');
+      info.textContent = `Page ${page} of ${totalPages}`;
+      pagination.appendChild(info);
+      if (page < totalPages) {
+        const next = document.createElement('button');
+        next.textContent = 'Next';
+        next.addEventListener('click', () => {
+          page++;
+          loadFlows();
+        });
+        pagination.appendChild(next);
+      }
+    } else {
+      pagination.innerHTML = '';
+    }
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="6">Failed to load flows</td></tr>';
   }
