@@ -3,3 +3,4 @@ export { default as IndexController } from './index-controller';
 export { default as ThemeParksController } from './theme-parks-controller';
 export { default as ScrapeController } from './scrape-controller';
 export { default as CookieController } from './cookie-controller';
+export { default as BlogController } from './blog-controller';
