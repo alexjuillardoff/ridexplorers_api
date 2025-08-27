@@ -19,8 +19,22 @@ export default class BlogService {
   }
 
   public async addItem(feed: string, item: any): Promise<void> {
+    const feeds = await this._db.readDBFile<Record<string, { id: string; schema: any }>>(
+      __BLOG_FEEDS_DB_FILENAME__
+    );
+    const feedInfo = feeds[feed];
+    if (!feedInfo) {
+      throw new Error(`Feed ${feed} not found`);
+    }
+    const schema = feedInfo.schema as Record<string, string>;
+    const parsedItem = typeof item === 'string' ? JSON.parse(item) : item;
+    for (const [key, type] of Object.entries(schema)) {
+      if (!(key in parsedItem) || typeof parsedItem[key] !== type) {
+        throw new Error('Invalid item');
+      }
+    }
     const items = await this._db.readDBFile<any[]>(`blog-${feed}`);
-    items.push(item);
+    items.push(parsedItem);
     await this._db.writeDBFile(`blog-${feed}`, items);
   }
 
