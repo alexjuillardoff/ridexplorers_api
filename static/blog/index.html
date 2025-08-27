@@ -25,20 +25,18 @@
     <a href="/docs" target="_blank">Swagger Docs</a>
     <a href="/files.html">Gestionnaire de fichiers</a>
   </nav>
-  <div class="container">
-    <h1>Gestion du blog</h1>
-    <section>
-      <h2>Création ou édition de flux</h2>
-      <input id="feed-name" placeholder="Nom du flux" />
-      <div id="schema-editor" style="height: 300px;"></div>
-      <button id="save-feed">Enregistrer le flux</button>
-    </section>
-    <section>
-      <h2>Ajouter une news</h2>
-      <select id="feed-select"></select>
-      <div id="item-editor" style="height: 300px;"></div>
-      <button id="add-item">Ajouter</button>
-    </section>
+  <div class="container blog-manager">
+    <div class="feeds-column">
+      <div class="feeds-header">
+        <button id="create-feed">Créer un flux</button>
+      </div>
+      <ul id="feeds-list"></ul>
+    </div>
+    <div class="editor-column">
+      <h2 id="editor-title"></h2>
+      <div id="feed-editor" style="height: 500px;"></div>
+      <button id="save-feed" style="display:none;">Enregistrer</button>
+    </div>
   </div>
   <div id="cookie-banner" class="cookie-banner">
     Ce site utilise des cookies techniques uniquement. <button id="accept-cookies">OK</button>

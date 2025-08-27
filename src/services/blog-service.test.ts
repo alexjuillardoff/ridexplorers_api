@@ -4,49 +4,44 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import BlogService from './blog-service';
 
-const feedsFile = path.join(process.cwd(), 'src', 'db', 'blog-feeds.json');
-const feedItemsFile = (name: string) => path.join(process.cwd(), 'src', 'db', `blog-${name}.json`);
+const dbPath = path.join(process.cwd(), 'src', 'db');
 
-beforeEach(async () => {
-  for (const file of [feedsFile, feedItemsFile('test')]) {
-    try {
-      await fs.rm(file);
-    } catch {
-      // ignore if file does not exist
+async function clean() {
+  try {
+    const files = await fs.readdir(dbPath);
+    for (const file of files) {
+      if (file.startsWith('blog')) {
+        await fs.rm(path.join(dbPath, file));
+      }
     }
-  }
-});
+  } catch {}
+}
 
-afterEach(async () => {
-  for (const file of [feedsFile, feedItemsFile('test')]) {
-    try {
-      await fs.rm(file);
-    } catch {
-      // ignore
-    }
-  }
-});
+beforeEach(clean);
+afterEach(clean);
 
-test('createFeed saves schema and allows adding items', async () => {
+test('create, update and list feeds', async () => {
   const service = new BlogService();
-  await service.createFeed('test', { title: 'string' });
-  await service.addItem('test', { id: 1, title: 'hello' });
-  const items = await service.getFeedItems('test');
-  assert.equal(items.length, 1);
-  assert.equal(items[0].title, 'hello');
+  const { slug } = await service.createFeed('Test Feed');
+  let feeds = await service.listFeeds();
+  assert.deepEqual(feeds, [{ name: 'Test Feed', slug }]);
+  let content = await service.getFeed(slug);
+  assert.deepEqual(content, {});
+  await service.updateFeed(slug, { hello: 'world' });
+  content = await service.getFeed(slug);
+  assert.deepEqual(content, { hello: 'world' });
+});
+
+test('rename and delete feed', async () => {
+  const service = new BlogService();
+  const { slug } = await service.createFeed('Old');
+  await service.updateFeed(slug, { a: 1 });
+  const renamed = await service.renameFeed(slug, 'New Name');
+  assert.equal(renamed.name, 'New Name');
+  const content = await service.getFeed(renamed.slug);
+  assert.deepEqual(content, { a: 1 });
+  await service.deleteFeed(renamed.slug);
   const feeds = await service.listFeeds();
-  assert.deepEqual(feeds, [{ name: 'test', schema: { title: 'string' } }]);
+  assert.equal(feeds.length, 0);
+  await assert.rejects(() => service.getFeed(renamed.slug));
 });
-
-test('getFeedItems throws error when feed not found', async () => {
-  const service = new BlogService();
-  await assert.rejects(() => service.getFeedItems('unknown'));
-});
-
-test('addItem validates objects against schema', async () => {
-  const service = new BlogService();
-  await service.createFeed('test', { title: 'string' });
-  await assert.rejects(() => service.addItem('test', { id: 1 }), /Invalid item/);
-  await assert.rejects(() => service.addItem('test', { title: 1 }), /Invalid item/);
-});
-

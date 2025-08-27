@@ -4,4 +4,4 @@ export { default as RcdbPicture } from './rcdb-picture';
 export { default as Picture } from './picture';
 export { default as ThemePark, SocialMedia } from './theme-park';
 export { default as ParkCoaster } from './park-coaster';
-export { default as BlogFeed, BlogFeedItem, BlogFeeds } from './blog-feed';
+export { default as BlogFeed, BlogFeeds } from './blog-feed';
