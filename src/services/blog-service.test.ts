@@ -43,3 +43,10 @@ test('getFeedItems throws error when feed not found', async () => {
   await assert.rejects(() => service.getFeedItems('unknown'));
 });
 
+test('addItem validates objects against schema', async () => {
+  const service = new BlogService();
+  await service.createFeed('test', { title: 'string' });
+  await assert.rejects(() => service.addItem('test', { id: 1 }), /Invalid item/);
+  await assert.rejects(() => service.addItem('test', { title: 1 }), /Invalid item/);
+});
+
