@@ -36,6 +36,7 @@
             <th>Entries</th>
             <th>Updated</th>
             <th>JSON</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -112,11 +113,67 @@ async function loadFlows() {
         <td>${flow.slug}</td>
         <td>${flow.entriesCount}</td>
         <td>${flow.updatedAt}</td>
-        <td><a href="${flow.jsonUrl}" target="_blank">JSON</a></td>`;
+        <td><a href="${flow.jsonUrl}" target="_blank">JSON</a></td>
+        <td>
+          <button class="rename-btn">Rename</button>
+          <button class="duplicate-btn">Duplicate</button>
+          <button class="delete-btn">Delete</button>
+        </td>`;
+
+      const renameBtn = tr.querySelector('.rename-btn');
+      renameBtn.addEventListener('click', async () => {
+        const newName = prompt('New name', flow.name);
+        if (!newName) return;
+        const newSlug = prompt('New slug', flow.slug);
+        if (!newSlug) return;
+        try {
+          const res = await fetch(`/api/blog/flows/${flow.slug}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newName, newSlug }),
+          });
+          if (!res.ok) throw new Error('Request failed');
+          await loadFlows();
+        } catch (e) {
+          alert('Failed to rename flow');
+        }
+      });
+
+      const duplicateBtn = tr.querySelector('.duplicate-btn');
+      duplicateBtn.addEventListener('click', async () => {
+        const newName = prompt('New name', flow.name + ' copy');
+        if (!newName) return;
+        const newSlug = prompt('New slug', flow.slug + '-copy');
+        if (!newSlug) return;
+        try {
+          const res = await fetch(`/api/blog/flows/${flow.slug}/duplicate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ newName, newSlug }),
+          });
+          if (!res.ok) throw new Error('Request failed');
+          await loadFlows();
+        } catch (e) {
+          alert('Failed to duplicate flow');
+        }
+      });
+
+      const deleteBtn = tr.querySelector('.delete-btn');
+      deleteBtn.addEventListener('click', async () => {
+        if (!confirm(`Delete flow "${flow.name}"?`)) return;
+        try {
+          const res = await fetch(`/api/blog/flows/${flow.slug}`, { method: 'DELETE' });
+          if (!res.ok) throw new Error('Request failed');
+          await loadFlows();
+        } catch (e) {
+          alert('Failed to delete flow');
+        }
+      });
+
       tbody.appendChild(tr);
     });
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="5">Failed to load flows</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6">Failed to load flows</td></tr>';
   }
 }
 
