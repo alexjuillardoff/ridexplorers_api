@@ -54,6 +54,8 @@ Le serveur lit plusieurs variables facultatives dans un fichier `.env`. Ces vari
 - `RCDB_URL` - URL de base utilisée pour le scraping de RCDB (défaut: `https://rcdb.com`).
 - `AUTH_USER` - nom d'utilisateur pour l'authentification Basic.
 - `AUTH_PASSWORD` - mot de passe associé.
+- `SSL_CERT_PATH` - chemin du certificat HTTPS (ex: `/etc/letsencrypt/live/mon.domaine/fullchain.pem`).
+- `SSL_KEY_PATH` - chemin de la clé privée HTTPS (ex: `/etc/letsencrypt/live/mon.domaine/privkey.pem`).
 
 Un fichier `.env.example` est fourni. Dupliquez-le en `.env` et adaptez les valeurs.
 

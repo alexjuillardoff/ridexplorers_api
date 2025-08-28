@@ -4,7 +4,9 @@ import type { Route } from '@lib/types';
 import { MetadataKeys } from '@lib/types';
 import type { Express, Handler } from 'express';
 import express, { Router } from 'express';
+import { readFileSync } from 'fs';
 import { Server as HttpServer } from 'http';
+import https, { Server as HttpsServer } from 'https';
 import { Server as SocketServer } from 'socket.io';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -23,7 +25,7 @@ const DEFAULT_SERVER_PORT = 8000;
 export default class Server {
   private readonly _app: Express;
   private readonly _port: number;
-  private _server: HttpServer;
+  private _server: HttpServer | HttpsServer;
   private _io!: SocketServer;
   private _controllers: any[] = [];
   private _diContainer: DiContainer;
@@ -104,10 +106,22 @@ export default class Server {
    */
   start() {
     this._initControllers();
+    const certPath = process.env.SSL_CERT_PATH;
+    const keyPath = process.env.SSL_KEY_PATH;
 
-    this._server = this._app.listen(this._port, () => {
-      console.log(`⚡[server]: Server is running at http://localhost:${this._port}`);
-    });
+    if (certPath && keyPath) {
+      const credentials = {
+        cert: readFileSync(certPath),
+        key: readFileSync(keyPath)
+      };
+      this._server = https.createServer(credentials, this._app).listen(this._port, () => {
+        console.log(`⚡[server]: Server is running at https://localhost:${this._port}`);
+      });
+    } else {
+      this._server = this._app.listen(this._port, () => {
+        console.log(`⚡[server]: Server is running at http://localhost:${this._port}`);
+      });
+    }
 
     this._io = new SocketServer(this._server, { cors: { origin: '*' } });
     io = this._io;
