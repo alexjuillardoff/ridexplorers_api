@@ -4,6 +4,9 @@ import { BasicStrategy } from 'passport-http';
 const USER = process.env.AUTH_USER;
 const PASSWORD = process.env.AUTH_PASSWORD;
 
+// Configure une authentification HTTP Basic simple. Si les identifiants
+// correspondent à ceux définis dans les variables d'environnement, la requête
+// est autorisée.
 passport.use(
   new BasicStrategy((username, password, done) => {
     if (username === USER && password === PASSWORD) {
@@ -13,4 +16,5 @@ passport.use(
   })
 );
 
+// Middleware à appliquer sur les routes protégées.
 export const authMiddleware = [passport.initialize(), passport.authenticate('basic', { session: false })];

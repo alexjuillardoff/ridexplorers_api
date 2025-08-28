@@ -1,3 +1,5 @@
+// Décorateur de méthode qui journalise la requête HTTP reçue (URL, verbe,
+// corps et en-têtes) avant d'exécuter la méthode cible.
 export default function LogRequest(): MethodDecorator {
   return (target: Object, propertyKey: string | Symbol, descriptor: PropertyDescriptor) => {
     const original = descriptor.value;

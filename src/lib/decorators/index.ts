@@ -1,4 +1,4 @@
-// export { default as Get } from './Get';
+// Rassemble l'ensemble des décorateurs utilisés dans l'application.
 export { default as Controller } from './controller-decorator';
 export { default as methodDecoratorFactory } from './method-decorator-factory';
 export { default as Get } from './get-decorator';

@@ -3,9 +3,16 @@ import { Controller, Delete, Get, Inject, Post, Put } from '@lib/decorators';
 import type { Request, Response } from 'express';
 
 @Controller('/api/blog')
+/**
+ * Contrôleur réservé à l'administration du mini système de blog.
+ * Toutes les routes sont protégées par l'authentification Basic.
+ */
 export default class BlogController {
   @Inject() private _blogService: BlogService;
 
+  /**
+   * Liste tous les flux existants.
+   */
   @Get('/feeds')
   public async listFeeds(_: Request, res: Response): Promise<void> {
     const feeds = await this._blogService.listFeeds();
@@ -27,6 +34,9 @@ export default class BlogController {
     }
   }
 
+  /**
+   * Récupère le contenu d'un flux spécifique.
+   */
   @Get('/feeds/:slug')
   public async getFeed(req: Request, res: Response): Promise<void> {
     const { slug } = req.params;
@@ -38,6 +48,9 @@ export default class BlogController {
     }
   }
 
+  /**
+   * Met à jour entièrement le contenu du flux désigné.
+   */
   @Put('/feeds/:slug')
   public async updateFeed(req: Request, res: Response): Promise<void> {
     const { slug } = req.params;
@@ -50,6 +63,9 @@ export default class BlogController {
     }
   }
 
+  /**
+   * Supprime définitivement un flux de blog.
+   */
   @Delete('/feeds/:slug')
   public async deleteFeed(req: Request, res: Response): Promise<void> {
     const { slug } = req.params;
@@ -61,6 +77,9 @@ export default class BlogController {
     }
   }
 
+  /**
+   * Renomme un flux existant.
+   */
   @Post('/feeds/:slug/rename')
   public async renameFeed(req: Request, res: Response): Promise<void> {
     const { slug } = req.params;

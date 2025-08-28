@@ -2,6 +2,9 @@
 
 RIDEXPLORERS API fournit une API REST simple contenant des données récupérées sur [RCDB](https://rcdb.com). Elle est construite en **TypeScript** avec **Express** et expose des points d'entrées pour interroger les montagnes russes et les parcs d'attractions. Une documentation générée à partir de la spécification OpenAPI est disponible sur `/docs` lorsque le serveur est lancé.
 
+> Pour un guide pas à pas d'installation destiné aux débutants, consultez le
+> fichier [`GUIDE_DEBUTANT.md`](./GUIDE_DEBUTANT.md).
+
 ## Fonctionnalités
 
 - Interrogation des montagnes russes et des parcs d'attractions via des routes REST.
@@ -63,6 +66,12 @@ pnpm test
 ```
 
 Cette commande utilise le runner de tests natif de Node pour valider les endpoints et utilitaires.
+
+### Contribution
+
+Le code est écrit en TypeScript et largement commenté pour faciliter sa prise
+en main. Avant de proposer une modification, assurez-vous que la suite de tests
+est verte et que votre code est correctement formaté.
 
 ---
 

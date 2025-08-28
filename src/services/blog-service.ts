@@ -6,16 +6,25 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 @Service()
+/**
+ * Service très simple de gestion de petits billets de blog stockés dans des
+ * fichiers JSON. Chaque flux est identifié par un slug et contient un objet
+ * libre représentant son contenu.
+ */
 export default class BlogService {
   private _db: JsonDB;
   private _dbPath: string;
 
   constructor() {
+    // Prépare la base de données et crée le fichier des flux s'il n'existe pas.
     this._db = JsonDB.getInstance();
     this._db.createDBFile(__BLOG_FEEDS_DB_FILENAME__, {});
     this._dbPath = path.join(process.cwd(), 'src', 'db');
   }
 
+  /**
+   * Liste tous les flux disponibles (slug + nom).
+   */
   public async listFeeds(): Promise<{ name: string; slug: string }[]> {
     const feeds = await this._db.readDBFile<Record<string, { id: string; name: string }>>(
       __BLOG_FEEDS_DB_FILENAME__
@@ -23,6 +32,9 @@ export default class BlogService {
     return Object.keys(feeds).map((slug) => ({ slug, name: feeds[slug].name }));
   }
 
+  /**
+   * Crée un nouveau flux et retourne ses informations de base.
+   */
   public async createFeed(name: string): Promise<{ name: string; slug: string }> {
     const slug = slugify(name);
     const feeds = await this._db.readDBFile<Record<string, { id: string; name: string }>>(
@@ -38,6 +50,9 @@ export default class BlogService {
     return { name, slug };
   }
 
+  /**
+   * Récupère le contenu d'un flux. Lance une erreur si le flux n'existe pas.
+   */
   public async getFeed(slug: string): Promise<any> {
     try {
       return await this._db.readDBFile<any>(`blog-${slug}`);
@@ -46,10 +61,16 @@ export default class BlogService {
     }
   }
 
+  /**
+   * Remplace le contenu complet d'un flux.
+   */
   public async updateFeed(slug: string, content: any): Promise<void> {
     await this._db.writeDBFile(`blog-${slug}`, content);
   }
 
+  /**
+   * Supprime un flux ainsi que son fichier associé.
+   */
   public async deleteFeed(slug: string): Promise<void> {
     const feeds = await this._db.readDBFile<Record<string, { id: string; name: string }>>(
       __BLOG_FEEDS_DB_FILENAME__
@@ -62,6 +83,9 @@ export default class BlogService {
     await fs.rm(path.join(this._dbPath, `blog-${slug}.json`), { force: true });
   }
 
+  /**
+   * Renomme un flux en mettant à jour son slug et son nom d'affichage.
+   */
   public async renameFeed(
     slug: string,
     newName: string

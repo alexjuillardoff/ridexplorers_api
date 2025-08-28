@@ -12,12 +12,14 @@ export default class ScrapeController {
 
 
   @Get('/files')
+  // Liste les fichiers JSON présents dans `src/db`.
   public async files(_: Request, res: Response) {
     const files = await this._scrapeService.listFiles();
     res.json(files);
   }
 
   @Get('/files/:name')
+  // Retourne le contenu du fichier spécifié.
   public async file(req: Request, res: Response) {
     try {
       const data = await this._scrapeService.readFile(req.params.name);
@@ -28,6 +30,7 @@ export default class ScrapeController {
   }
 
   @Delete('/files/:name')
+  // Supprime un fichier de scraping.
   public async deleteFile(req: Request, res: Response) {
     try {
       await this._scrapeService.deleteFile(req.params.name);
@@ -39,6 +42,7 @@ export default class ScrapeController {
 
 
   @Post('/upload')
+  // Téléverse un nouveau fichier de données dans `src/db`.
   public async upload(req: Request, res: Response) {
     const upload = multer({
       storage: multer.diskStorage({
