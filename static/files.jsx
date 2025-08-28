@@ -134,6 +134,7 @@ function App() {
         <a href="/">Accueil</a>
         <a href="/docs" target="_blank">Swagger Docs</a>
         <a href="/files.html">Gestionnaire de fichiers</a>
+        <a href="/blog">Blog</a>
       </nav>
       <div className="container">
         <h1>Gestion des fichiers</h1>
