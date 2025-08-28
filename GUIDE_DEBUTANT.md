@@ -113,7 +113,17 @@ curl "http://localhost:8000/scrape/start?script=scrape"
 
 Les fichiers générés se trouvent dans `src/db/`.
 
-## 9. Aller plus loin
+## 9. Exécuter les tests
+
+Avant toute contribution, assurez-vous que la suite de tests passe :
+
+```bash
+pnpm test
+```
+
+Vous devriez voir tous les tests en vert.
+
+## 10. Aller plus loin
 
 Consultez le fichier `README.md` pour une description complète de toutes les routes et fonctionnalités disponibles.
 

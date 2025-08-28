@@ -1,5 +1,10 @@
 import 'reflect-metadata';
 
+/**
+ * Décorateur de propriété permettant d'injecter automatiquement une instance
+ * fournie par le conteneur DI. La classe cible doit avoir été décorée avec
+ * `@Service`.
+ */
 export default function Inject(): PropertyDecorator {
   return function (target, propertyKey) {
     const containerClass = target.constructor;

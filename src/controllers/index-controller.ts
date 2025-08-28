@@ -2,6 +2,9 @@ import { Controller, Get } from '@lib/decorators';
 import type { Request, Response } from 'express';
 
 @Controller()
+/**
+ * Fournit quelques routes de base listant les endpoints disponibles.
+ */
 export default class IndexController {
   private _endpoints: any[] = [
     { endpoint: '/api/coasters?offset=0&limit=20', description: 'Returns all coasters information' },

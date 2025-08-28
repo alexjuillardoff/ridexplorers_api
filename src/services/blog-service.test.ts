@@ -1,3 +1,5 @@
+// Tests unitaires basés sur le runner natif de Node pour vérifier le
+// comportement du service de blog.
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
